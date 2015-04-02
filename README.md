@@ -1,5 +1,5 @@
 # Knowsie
-CS499 Team Project: Kelly Nguyen & Eric Cao
+*CS499 Team Project: Kelly Nguyen & Eric Cao*
 
 ## The Problem
 Currently, there are a plethora of social media applications; and it’s making it hard to keep track of the people you care about. Staying in touch with family, friends, and celebrities becomes a tedious and repetitive task. You have to open each individual social media app, search that person, and view their profile to see if any changes have occurred.

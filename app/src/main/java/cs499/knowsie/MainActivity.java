@@ -19,7 +19,10 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Navigation drawer contents (filler)
         knowsieGroups = getResources().getStringArray(R.array.knowsie_groups);
+
+        // Initialize navigation drawer
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerList = (ListView) findViewById(R.id.nav_drawer);
 

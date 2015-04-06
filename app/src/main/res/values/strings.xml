@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Knowsie</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string-array name="knowsie_groups">
+        <item>CLG ZionSpartan</item>
+        <item>CLG Xmithie</item>
+        <item>CLG Link</item>
+        <item>CLG Doublelift</item>
+        <item>CLG Aphromoo</item>
+    </string-array>
+</resources>

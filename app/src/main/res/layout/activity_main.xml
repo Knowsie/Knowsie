@@ -17,14 +17,14 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#FFF"></Toolbar>
+            android:background="@android:color/white" />
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp">
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin">
 
             <com.getbase.floatingactionbutton.FloatingActionButton
                 android:layout_width="wrap_content"
@@ -37,16 +37,16 @@
     <!-- Navigation Drawer -->
     <ListView
         android:id="@+id/nav_drawer"
-        android:layout_width="300dp"
+        android:layout_width="@dimen/nav_drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="#ffffffff"
+        android:background="@android:color/white"
         android:choiceMode="singleChoice"
         android:divider="@android:color/transparent"
         android:dividerHeight="0dp"
         android:fitsSystemWindows="true"
-        android:paddingBottom="8dp"
-        android:paddingTop="8dp">
+        android:paddingBottom="@dimen/nav_drawer_padding_bottom"
+        android:paddingTop="@dimen/nav_drawer_padding_top">
 
     </ListView>
 

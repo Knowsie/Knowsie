@@ -21,6 +21,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.melnykov:floatingactionbutton:1.2.0'
     compile 'com.android.support:appcompat-v7:22.0.0'
+    compile 'com.getbase:floatingactionbutton:1.9.0'
 }

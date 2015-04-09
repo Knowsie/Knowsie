@@ -1,16 +1,16 @@
 package cs499.knowsie;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toolbar;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends ActionBarActivity {
     private String[] knowsieGroups;
     private DrawerLayout drawerLayout;
     private ListView drawerList;
@@ -21,7 +21,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         // Navigation drawer contents (filler)
         knowsieGroups = getResources().getStringArray(R.array.knowsie_groups);

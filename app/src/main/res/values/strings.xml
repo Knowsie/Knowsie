@@ -3,6 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
     <string-array name="knowsie_groups">
         <item>CLG ZionSpartan</item>
         <item>CLG Xmithie</item>

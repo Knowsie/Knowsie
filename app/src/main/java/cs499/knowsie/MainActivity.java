@@ -30,6 +30,8 @@ public class MainActivity extends ActionBarActivity {
 
         // Initialize navigation drawer
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+
         drawerToggle = new ActionBarDrawerToggle(
                 this,
                 drawerLayout,

@@ -5,12 +5,14 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
 
 public class MainActivity extends ActionBarActivity {
+    private static final String TAG = "MainActivity";
     private String[] knowsieGroups;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
@@ -19,11 +21,13 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_nav_drawer);
         setSupportActionBar(toolbar);
+        Log.d(TAG, "Toolbar set");
 
         // Navigation drawer contents (filler)
         knowsieGroups = getResources().getStringArray(R.array.knowsie_groups);
@@ -42,6 +46,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Open nav drawer when nav icon is tapped
         drawerLayout.setDrawerListener(drawerToggle);
+        Log.d(TAG, "setDrawerListener");
 
         drawerList = (ListView) findViewById(R.id.nav_drawer);
 

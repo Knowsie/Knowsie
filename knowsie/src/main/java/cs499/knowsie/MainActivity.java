@@ -29,9 +29,6 @@ public class MainActivity extends ActionBarActivity {
         setSupportActionBar(toolbar);
         Log.d(TAG, "Toolbar set");
 
-        // Navigation drawer contents (filler)
-        knowsieGroups = getResources().getStringArray(R.array.knowsie_groups);
-
         // Initialize navigation drawer
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
@@ -46,7 +43,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Open nav drawer when nav icon is tapped
         drawerLayout.setDrawerListener(drawerToggle);
-        Log.d(TAG, "setDrawerListener");
+        Log.d(TAG, "setDrawerListener()");
 
         drawerList = (ListView) findViewById(R.id.nav_drawer);
 

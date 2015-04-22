@@ -10,4 +10,7 @@
     <string name="new_group">Add new Group</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="login_button">Login</string>
+    <string name="signup_button">Sign Up</string>
 </resources>

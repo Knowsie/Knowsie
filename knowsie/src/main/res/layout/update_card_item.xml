@@ -17,7 +17,10 @@
             android:id="@+id/card_header"
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            android:padding="@dimen/activity_horizontal_margin">
+            android:paddingBottom="16dp"
+            android:paddingEnd="16dp"
+            android:paddingStart="16dp"
+            android:paddingTop="16dp">
 
             <ImageView
                 android:id="@+id/update_src"
@@ -29,46 +32,51 @@
             <TextView
                 android:id="@+id/user_name"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_toEndOf="@id/update_src"
                 android:paddingStart="@dimen/activity_horizontal_margin"
-                android:paddingTop="4dp"
-                android:text="First Last"
+                android:text="Username"
                 android:textColor="#000000" />
 
             <TextView
+                android:id="@+id/user_handle"
                 android:layout_width="wrap_content"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/user_name"
                 android:layout_toEndOf="@id/update_src"
-                android:paddingBottom="4dp"
                 android:paddingStart="@dimen/activity_horizontal_margin"
-                android:text="\@Name" />
+                android:text="\@Handle" />
         </RelativeLayout>
 
         <ImageView
-            android:id="@+id/image"
+            android:id="@+id/image_content"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:background="#be121212" />
 
         <TextView
+            android:id="@+id/text_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="@dimen/activity_horizontal_margin"
-            android:text="Placeholder text. Hi Kelly!"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
             android:textColor="#000000" />
 
         <LinearLayout
+            android:id="@+id/actions"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="56dp"
             android:orientation="horizontal"
             android:padding="8dp">
 
-            <Button
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:text="Share" />
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:padding="8dp"
+                android:text="SHARE"
+                android:textColor="#000000" />
 
         </LinearLayout>
     </LinearLayout>

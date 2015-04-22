@@ -10,13 +10,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
-    private String[] knowsieGroups;
+    private ArrayList<Update> updates;
+    private UpdateListAdapter updateListAdapter;
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle drawerToggle;
-    private ListView drawerList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,10 +47,21 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener()");
 
-        drawerList = (ListView) findViewById(R.id.nav_drawer);
+        // Initialize update list
+        String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
+                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 
-//        drawerList.setAdapter(new ArrayAdapter<String>(this,
-//                R.layout.drawer_list_item, knowsieGroups));
+        Log.d(TAG, "Filling list of updates.");
+        updates = new ArrayList<Update>();
+        for (int i = 0; i < 15; i++) {
+            updates.add(new Update("MonteCristo", "@ggCMonteCristo", msg));
+        }
+
+        ListView listView = (ListView) findViewById(R.id.update_list);
+
+        Log.d(TAG, "Initializing and setting adapter");
+        updateListAdapter = new UpdateListAdapter(this, updates);
+        listView.setAdapter(updateListAdapter);
     }
 
 

@@ -20,6 +20,12 @@
             android:background="@color/material_deep_teal_500"
             android:elevation="5dp" />
 
+        <ListView
+            android:id="@+id/update_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar" />
+
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

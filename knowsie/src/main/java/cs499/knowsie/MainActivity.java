@@ -36,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_nav_drawer);
         setSupportActionBar(toolbar);
-        Log.d(TAG, "Toolbar set");
+        Log.d(TAG, "setSupportActionBar");
     }
 
     public void initNavDrawer() {
@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
 
         // Open nav drawer when nav icon is tapped
         drawerLayout.setDrawerListener(drawerToggle);
-        Log.d(TAG, "setDrawerListener()");
+        Log.d(TAG, "setDrawerListener");
     }
 
     public void initUpdateListView() {

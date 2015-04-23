@@ -1,85 +1,88 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="cs499.knowsie.LoginActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         android:weightSum="1">
 
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="406dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/knowsie_icon" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="406dp"
+            android:src="@drawable/knowsie_icon" />
 
-    <LinearLayout
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:text="username"
-            android:textSize="20sp"
-            android:layout_centerInParent="true"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <EditText
-            android:hint=""
-            android:padding="10dp"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/username"
+                android:textSize="20sp" />
 
-    </LinearLayout>
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:padding="10dp" />
 
-    <LinearLayout
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        </LinearLayout>
 
-        <TextView
-            android:text="password"
-            android:textSize="20sp"
-            android:layout_centerInParent="true"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <EditText
-            android:hint=""
-            android:padding="10dp"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/password"
+                android:textSize="20sp" />
 
-    </LinearLayout>
+            <EditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:hint=""
+                android:padding="10dp" />
 
-    <LinearLayout
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        </LinearLayout>
 
-
-        <Button
-            android:id="@+id/trueButton"
-            android:text="@string/login_button"
+        <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/trueButton"
-            android:text="@string/signup_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/login" />
+
+            <Button
+                android:id="@+id/signup_Button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/signup" />
+
+        </LinearLayout>
     </LinearLayout>
 
 </RelativeLayout>

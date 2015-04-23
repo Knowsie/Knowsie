@@ -18,6 +18,7 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Update> updates;
     private UpdateListAdapter updateListAdapter;
     private DrawerLayout drawerLayout;
+    private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
 
     @Override
@@ -26,12 +27,19 @@ public class MainActivity extends ActionBarActivity {
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        initToolbar();
+        initNavDrawer();
+        initUpdateListView();
+    }
+
+    public void initToolbar() {
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_nav_drawer);
         setSupportActionBar(toolbar);
         Log.d(TAG, "Toolbar set");
+    }
 
-        // Initialize navigation drawer
+    public void initNavDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
 
@@ -46,8 +54,9 @@ public class MainActivity extends ActionBarActivity {
         // Open nav drawer when nav icon is tapped
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener()");
+    }
 
-        // Initialize update list
+    public void initUpdateListView() {
         String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
                 "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
 

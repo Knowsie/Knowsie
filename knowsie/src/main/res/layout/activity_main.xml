@@ -27,8 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/toolbar"
             android:divider="@android:color/transparent"
-            android:dividerHeight="0dp"
-            android:padding="8dp" />
+            android:dividerHeight="0dp" />
 
         <com.getbase.floatingactionbutton.FloatingActionsMenu
             android:layout_width="wrap_content"

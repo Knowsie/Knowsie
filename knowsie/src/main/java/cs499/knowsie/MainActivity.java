@@ -15,11 +15,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
+    private ArrayList<Group> groups;
     private ArrayList<Update> updates;
-    private UpdateListAdapter updateListAdapter;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
+    private ListView updateListView;
+    private ListView drawerListview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +42,11 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void initNavDrawer() {
+        groups = new ArrayList<Group>();
+        groups.add(new Group("Family"));
+        groups.add(new Group("Friends"));
+        groups.add(new Group("Food"));
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
 
@@ -54,6 +61,9 @@ public class MainActivity extends ActionBarActivity {
         // Open nav drawer when nav icon is tapped
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener");
+
+        drawerListview = (ListView) findViewById(R.id.nav_drawer);
+        drawerListview.setAdapter(new GroupListAdapter(this, groups));
     }
 
     public void initUpdateListView() {
@@ -66,11 +76,10 @@ public class MainActivity extends ActionBarActivity {
             updates.add(new Update("MonteCristo", "@ggCMonteCristo", msg));
         }
 
-        ListView listView = (ListView) findViewById(R.id.update_list);
+        updateListView = (ListView) findViewById(R.id.update_list);
 
         Log.d(TAG, "Initializing and setting adapter");
-        updateListAdapter = new UpdateListAdapter(this, updates);
-        listView.setAdapter(updateListAdapter);
+        updateListView.setAdapter(new UpdateListAdapter(this, updates));
     }
 
 

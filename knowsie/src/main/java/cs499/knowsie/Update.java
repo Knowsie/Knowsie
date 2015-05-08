@@ -1,8 +1,5 @@
 package cs499.knowsie;
 
-/**
- * Created by eric on 4/21/2015.
- */
 public class Update {
     private String userName;
     private String userHandle;

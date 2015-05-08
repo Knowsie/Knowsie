@@ -9,9 +9,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-/**
- * Created by eric on 4/21/2015.
- */
 public class UpdateListAdapter extends ArrayAdapter<Update> {
 
     private Context context;

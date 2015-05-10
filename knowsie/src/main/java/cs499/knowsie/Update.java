@@ -1,14 +1,19 @@
 package cs499.knowsie;
 
 public class Update {
+
+    public static final String TWITTER = "Twitter";
+    public static final String INSTAGRAM = "Instagram";
     private String userName;
     private String userHandle;
     private String textContent;
+    private String source;
 
-    public Update(String userName, String userHandle, String textContent) {
+    public Update(String userName, String userHandle, String textContent, String source) {
         this.userName = userName;
         this.userHandle = userHandle;
         this.textContent = textContent;
+        this.source = source;
     }
 
     public String getUserName() {
@@ -33,5 +38,13 @@ public class Update {
 
     public void setTextContent(String textContent) {
         this.textContent = textContent;
+    }
+
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(String source) {
+        this.source = source;
     }
 }

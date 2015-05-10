@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -26,14 +27,28 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(R.layout.update_card_item, parent, false);
 
+        Update update = updates.get(position);
+
+        viewHolder.updateSource = (ImageView) convertView.findViewById(R.id.update_src);
+        switch (update.getSource()) {
+            case Update.INSTAGRAM:
+                viewHolder.updateSource.setImageResource(R.drawable.ic_instagram_icon);
+                break;
+            case Update.TWITTER:
+                viewHolder.updateSource.setImageResource(R.drawable.ic_twitter_logo_blue);
+                break;
+            default:
+                break;
+        }
+
         viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
-        viewHolder.userName.setText(updates.get(position).getUserName());
+        viewHolder.userName.setText(update.getUserName());
 
         viewHolder.userHandle = (TextView) convertView.findViewById(R.id.user_handle);
-        viewHolder.userHandle.setText(updates.get(position).getUserHandle());
+        viewHolder.userHandle.setText(update.getUserHandle());
 
         viewHolder.textContent = (TextView) convertView.findViewById(R.id.text_content);
-        viewHolder.textContent.setText(updates.get(position).getTextContent());
+        viewHolder.textContent.setText(update.getTextContent());
 
         convertView.setTag(viewHolder);
 
@@ -41,6 +56,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
     }
 
     private static class ViewHolder {
+        ImageView updateSource;
         TextView userName;
         TextView userHandle;
         TextView textContent;

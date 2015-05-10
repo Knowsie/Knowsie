@@ -24,7 +24,17 @@ public class GroupFragment extends ListFragment {
 
         updateList = new ArrayList<Update>();
         for (int i = 0; i < 5; i++) {
-            updateList.add(new Update("MonteCristo", "@ggCMonteCristo", msg));
+            if (i % 2 == 0) {
+                updateList.add(new Update("MonteCristo",
+                        "@ggCMonteCristo",
+                        msg,
+                        Update.TWITTER));
+            } else {
+                updateList.add(new Update("Google",
+                        "@google",
+                        msg,
+                        Update.INSTAGRAM));
+            }
         }
 
         updateListAdapter = new UpdateListAdapter(view.getContext(), updateList);

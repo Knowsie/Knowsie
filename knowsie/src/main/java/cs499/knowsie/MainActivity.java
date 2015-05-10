@@ -66,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
         drawerListView = (ListView) findViewById(R.id.nav_drawer);
         Log.d(TAG, "drawerListView.setAdapter");
         drawerListView.setAdapter(new GroupListAdapter(this, groups));
+        drawerListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         Log.d(TAG, "drawerListView.setOnItemClickListener");
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -80,7 +81,8 @@ public class MainActivity extends ActionBarActivity {
 
         FragmentManager fragmentManager = this.getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.group_fragment, fragment).commit();
+                .replace(R.id.group_fragment, fragment)
+                .commit();
 
         drawerListView.setItemChecked(position, true);
         setTitle(groups.get(position).getGroupName());

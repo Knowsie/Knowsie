@@ -22,18 +22,27 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = new ViewHolder();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.update_card_item, parent, false);
+        convertView = inflater.inflate(R.layout.update_card_item, parent, false);
 
-        TextView userName = (TextView) view.findViewById(R.id.user_name);
-        userName.setText(updates.get(position).getUserName());
+        viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
+        viewHolder.userName.setText(updates.get(position).getUserName());
 
-        TextView userHandle = (TextView) view.findViewById(R.id.user_handle);
-        userHandle.setText(updates.get(position).getUserHandle());
+        viewHolder.userHandle = (TextView) convertView.findViewById(R.id.user_handle);
+        viewHolder.userHandle.setText(updates.get(position).getUserHandle());
 
-        TextView textContent = (TextView) view.findViewById(R.id.text_content);
-        textContent.setText(updates.get(position).getTextContent());
+        viewHolder.textContent = (TextView) convertView.findViewById(R.id.text_content);
+        viewHolder.textContent.setText(updates.get(position).getTextContent());
 
-        return view;
+        convertView.setTag(viewHolder);
+
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        TextView userName;
+        TextView userHandle;
+        TextView textContent;
     }
 }

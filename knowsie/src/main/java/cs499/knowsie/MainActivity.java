@@ -1,5 +1,6 @@
 package cs499.knowsie;
 
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -8,6 +9,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -16,12 +19,10 @@ import java.util.ArrayList;
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
     private ArrayList<Group> groups;
-    private ArrayList<Update> updates;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
-    private ListView updateListView;
-    private ListView drawerListview;
+    private ListView drawerListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
 
         initToolbar();
         initNavDrawer();
-        initUpdateListView();
+        selectItem(0);
     }
 
     public void initToolbar() {
@@ -62,26 +63,29 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener");
 
-        drawerListview = (ListView) findViewById(R.id.nav_drawer);
-        drawerListview.setAdapter(new GroupListAdapter(this, groups));
+        drawerListView = (ListView) findViewById(R.id.nav_drawer);
+        Log.d(TAG, "drawerListView.setAdapter");
+        drawerListView.setAdapter(new GroupListAdapter(this, groups));
+        Log.d(TAG, "drawerListView.setOnItemClickListener");
+        drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                selectItem(position);
+            }
+        });
     }
 
-    public void initUpdateListView() {
-        String msg = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, " +
-                "sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+    private void selectItem(int position) {
+        GroupFragment fragment = new GroupFragment();
 
-        Log.d(TAG, "Filling list of updates.");
-        updates = new ArrayList<Update>();
-        for (int i = 0; i < 15; i++) {
-            updates.add(new Update("MonteCristo", "@ggCMonteCristo", msg));
-        }
+        FragmentManager fragmentManager = this.getFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.group_fragment, fragment).commit();
 
-        updateListView = (ListView) findViewById(R.id.update_list);
-
-        Log.d(TAG, "Initializing and setting adapter");
-        updateListView.setAdapter(new UpdateListAdapter(this, updates));
+        drawerListView.setItemChecked(position, true);
+        setTitle(groups.get(position).getGroupName());
+        drawerLayout.closeDrawer(drawerListView);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

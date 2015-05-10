@@ -22,12 +22,20 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder = new ViewHolder();
+
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.drawer_list_item, parent, false);
+        convertView = inflater.inflate(R.layout.drawer_list_item, parent, false);
 
-        TextView groupName = (TextView) view.findViewById(R.id.drawer_item);
-        groupName.setText(groups.get(position).getGroupName());
+        viewHolder.groupName = (TextView) convertView.findViewById(R.id.drawer_groups_list_item);
+        viewHolder.groupName.setText(groups.get(position).getGroupName());
 
-        return view;
+        convertView.setTag(viewHolder);
+
+        return convertView;
+    }
+
+    private static class ViewHolder {
+        TextView groupName;
     }
 }

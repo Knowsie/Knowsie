@@ -7,12 +7,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.util.Log;
+
+import com.parse.ParseTwitterUtils;
+import com.parse.ParseException;
+import com.parse.LogInCallback;
+import com.parse.ParseUser;
 
 
 public class LoginActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -20,12 +27,36 @@ public class LoginActivity extends Activity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
+                loginWithTwitter();
             }
         });
     }
 
+    public void loginWithTwitter() {
+        ParseTwitterUtils.logIn(this, new LogInCallback()
+        {
+            @Override
+            public void done(ParseUser user,ParseException err)
+            {
+                if (user == null)
+                {
+                    Log.d("Knowsie","Uh oh. The user cancelled the Twitter login.");
+                }
+                else if (user.isNew())
+                {
+                    Log.d("Knowsie","User signed up and logged in through Twitter!");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+                else
+                {
+                    Log.d("Knowsie", "User logged in through Twitter!");
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }
+            }
+        });
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

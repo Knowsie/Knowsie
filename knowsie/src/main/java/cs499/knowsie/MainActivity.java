@@ -13,12 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import com.parse.Parse;
 import com.parse.ParseTwitterUtils;
-import com.parse.ParseObject; //Will be used for later
 
+import java.util.ArrayList;
+
+import cs499.knowsie.adapters.GroupListAdapter;
+import cs499.knowsie.data.Group;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";

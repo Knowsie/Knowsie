@@ -1,24 +1,22 @@
-package cs499.knowsie;
+package cs499.knowsie.data;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-/**
- * Created by eric on 5/5/2015.
- */
 public class Group {
 
     private String groupName;
-    private ArrayList<String> listOfUsernames;
+    private HashMap<String, String> usernames;
     private ArrayList<Update> listOfUpdates;
 
     public Group(String groupName) {
         this.groupName = groupName;
-        this.listOfUsernames = new ArrayList<>();
+        this.usernames = new HashMap<String, String>();
         this.listOfUpdates = new ArrayList<>();
     }
 
-    public void addUsername(String username) {
-        this.listOfUsernames.add(username);
+    public void addUsername(String username, String source) {
+        this.usernames.put(username, source);
     }
 
     public void addUpdate(Update update) {
@@ -33,12 +31,12 @@ public class Group {
         this.groupName = groupName;
     }
 
-    public ArrayList<String> getListOfUsernames() {
-        return listOfUsernames;
+    public HashMap<String, String> getUsernames() {
+        return usernames;
     }
 
-    public void setListOfUsernames(ArrayList<String> listOfUsernames) {
-        this.listOfUsernames = listOfUsernames;
+    public void setUsernames(HashMap<String, String> usernames) {
+        this.usernames = usernames;
     }
 
     public ArrayList<Update> getListOfUpdates() {

@@ -9,6 +9,9 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import cs499.knowsie.adapters.UpdateListAdapter;
+import cs499.knowsie.data.Update;
+
 public class GroupFragment extends ListFragment {
 
     private UpdateListAdapter updateListAdapter;

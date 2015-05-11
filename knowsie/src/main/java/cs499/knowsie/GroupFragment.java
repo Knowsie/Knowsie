@@ -9,13 +9,18 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
+import cs499.knowsie.adapters.UpdateListAdapter;
+import cs499.knowsie.data.Update;
+
 public class GroupFragment extends ListFragment {
 
     private UpdateListAdapter updateListAdapter;
     private ArrayList<Update> updateList;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group, container, false);
         ListView listView = (ListView) view.findViewById(R.id.group);
 
@@ -26,14 +31,14 @@ public class GroupFragment extends ListFragment {
         for (int i = 0; i < 5; i++) {
             if (i % 2 == 0) {
                 updateList.add(new Update("MonteCristo",
-                        "@ggCMonteCristo",
-                        msg,
-                        Update.TWITTER));
+                                          "@ggCMonteCristo",
+                                          msg,
+                                          Update.TWITTER));
             } else {
                 updateList.add(new Update("Google",
-                        "@google",
-                        msg,
-                        Update.INSTAGRAM));
+                                          "@google",
+                                          msg,
+                                          Update.INSTAGRAM));
             }
         }
 

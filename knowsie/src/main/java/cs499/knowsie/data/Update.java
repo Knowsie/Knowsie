@@ -1,4 +1,4 @@
-package cs499.knowsie;
+package cs499.knowsie.data;
 
 public class Update {
 

@@ -1,4 +1,4 @@
-package cs499.knowsie;
+package cs499.knowsie.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,9 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import cs499.knowsie.R;
+import cs499.knowsie.data.Group;
 
 public class GroupListAdapter extends ArrayAdapter<Group> {
 

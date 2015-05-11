@@ -13,12 +13,13 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.util.ArrayList;
-
 import com.parse.Parse;
 import com.parse.ParseTwitterUtils;
-import com.parse.ParseObject; //Will be used for later
 
+import java.util.ArrayList;
+
+import cs499.knowsie.adapters.GroupListAdapter;
+import cs499.knowsie.data.Group;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
@@ -38,8 +39,8 @@ public class MainActivity extends ActionBarActivity {
         Parse.initialize(this, "SwPZ3zBLSW9FxLOw3sccKI7MPplfUhTPg4zmOzQf", "VlqXfYuv3BrPrnypGhBKvEcFN5jFIt6cG0uRqKyN");
 
         //Added for Parse and Twitter Login
-        ParseTwitterUtils.initialize("YrWhtaKPpL9rgYCZI0ykP99Kl", "Yvzr7n3qSOQ55dYEMsuzlXSpCRnfBZdhhO1dexJuv7AzaTnPkd");
-
+        ParseTwitterUtils.initialize("YrWhtaKPpL9rgYCZI0ykP99Kl",
+                                     "Yvzr7n3qSOQ55dYEMsuzlXSpCRnfBZdhhO1dexJuv7AzaTnPkd");
         initToolbar();
         initNavDrawer();
         selectItem(0);

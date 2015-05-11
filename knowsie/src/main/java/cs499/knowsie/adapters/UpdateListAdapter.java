@@ -1,4 +1,4 @@
-package cs499.knowsie;
+package cs499.knowsie.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+
+import cs499.knowsie.R;
+import cs499.knowsie.data.Update;
 
 public class UpdateListAdapter extends ArrayAdapter<Update> {
 
@@ -32,10 +35,10 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         viewHolder.updateSource = (ImageView) convertView.findViewById(R.id.update_src);
         switch (update.getSource()) {
             case Update.INSTAGRAM:
-                viewHolder.updateSource.setImageResource(R.drawable.ic_instagram_icon);
+                viewHolder.updateSource.setImageResource(R.drawable.ic_instagram);
                 break;
             case Update.TWITTER:
-                viewHolder.updateSource.setImageResource(R.drawable.ic_twitter_logo_blue);
+                viewHolder.updateSource.setImageResource(R.drawable.ic_twitter);
                 break;
             default:
                 break;

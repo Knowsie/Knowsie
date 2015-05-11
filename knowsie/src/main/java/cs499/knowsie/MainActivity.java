@@ -35,12 +35,6 @@ public class MainActivity extends ActionBarActivity {
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
 
-        //Added for Parse Initialization
-        Parse.initialize(this, "SwPZ3zBLSW9FxLOw3sccKI7MPplfUhTPg4zmOzQf", "VlqXfYuv3BrPrnypGhBKvEcFN5jFIt6cG0uRqKyN");
-
-        //Added for Parse and Twitter Login
-        ParseTwitterUtils.initialize("YrWhtaKPpL9rgYCZI0ykP99Kl", "Yvzr7n3qSOQ55dYEMsuzlXSpCRnfBZdhhO1dexJuv7AzaTnPkd");
-
         initToolbar();
         initNavDrawer();
         selectItem(0);

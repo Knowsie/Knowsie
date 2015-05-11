@@ -19,7 +19,7 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="406dp"
-            android:src="@drawable/knowsie_icon" />
+            android:src="@drawable/login_icon" />
 
         <LinearLayout
             android:layout_width="wrap_content"

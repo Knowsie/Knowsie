@@ -13,9 +13,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.parse.Parse;
-import com.parse.ParseTwitterUtils;
-
 import java.util.ArrayList;
 
 import cs499.knowsie.adapters.GroupListAdapter;
@@ -114,5 +111,10 @@ public class MainActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        //Do absolutely nothing
     }
 }

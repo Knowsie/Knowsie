@@ -25,15 +25,19 @@ public class GroupListAdapter extends ArrayAdapter<Group> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = new ViewHolder();
+        ViewHolder viewHolder;
 
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.drawer_list_item, parent, false);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context)
+                                        .inflate(R.layout.drawer_list_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.groupName = (TextView) convertView.findViewById(R.id.drawer_groups_list_item);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
 
-        viewHolder.groupName = (TextView) convertView.findViewById(R.id.drawer_groups_list_item);
         viewHolder.groupName.setText(groups.get(position).getGroupName());
-
-        convertView.setTag(viewHolder);
 
         return convertView;
     }

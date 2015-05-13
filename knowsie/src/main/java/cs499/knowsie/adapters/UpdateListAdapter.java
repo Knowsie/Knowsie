@@ -26,13 +26,23 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder viewHolder = new ViewHolder();
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.update_card_item, parent, false);
+        ViewHolder viewHolder;
+
+        if (convertView == null) {
+            convertView = LayoutInflater.from(context)
+                                        .inflate(R.layout.update_card_item, parent, false);
+            viewHolder = new ViewHolder();
+            viewHolder.updateSource = (ImageView) convertView.findViewById(R.id.update_src);
+            viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
+            viewHolder.userHandle = (TextView) convertView.findViewById(R.id.user_handle);
+            viewHolder.textContent = (TextView) convertView.findViewById(R.id.text_content);
+            convertView.setTag(viewHolder);
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
 
         Update update = updates.get(position);
 
-        viewHolder.updateSource = (ImageView) convertView.findViewById(R.id.update_src);
         switch (update.getSource()) {
             case Update.INSTAGRAM:
                 viewHolder.updateSource.setImageResource(R.drawable.ic_instagram);
@@ -44,16 +54,11 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
                 break;
         }
 
-        viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
         viewHolder.userName.setText(update.getUserName());
 
-        viewHolder.userHandle = (TextView) convertView.findViewById(R.id.user_handle);
         viewHolder.userHandle.setText(update.getUserHandle());
 
-        viewHolder.textContent = (TextView) convertView.findViewById(R.id.text_content);
         viewHolder.textContent.setText(update.getTextContent());
-
-        convertView.setTag(viewHolder);
 
         return convertView;
     }

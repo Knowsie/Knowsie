@@ -3,15 +3,15 @@ package cs499.knowsie;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.util.Log;
 
-import com.parse.ParseTwitterUtils;
-import com.parse.ParseException;
 import com.parse.LogInCallback;
+import com.parse.ParseException;
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 
@@ -21,6 +21,12 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
+        if (ParseUser.getCurrentUser() != null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
+
         setContentView(R.layout.activity_login);
 
         Button loginButton = (Button) findViewById(R.id.login_button);
@@ -33,23 +39,16 @@ public class LoginActivity extends Activity {
     }
 
     public void loginWithTwitter() {
-        ParseTwitterUtils.logIn(this, new LogInCallback()
-        {
+        ParseTwitterUtils.logIn(this, new LogInCallback() {
             @Override
-            public void done(ParseUser user,ParseException err)
-            {
-                if (user == null)
-                {
-                    Log.d("Knowsie","Uh oh. The user cancelled the Twitter login.");
-                }
-                else if (user.isNew())
-                {
-                    Log.d("Knowsie","User signed up and logged in through Twitter!");
+            public void done(ParseUser user, ParseException err) {
+                if (user == null) {
+                    Log.d("Knowsie", "Uh oh. The user cancelled the Twitter login.");
+                } else if (user.isNew()) {
+                    Log.d("Knowsie", "User signed up and logged in through Twitter!");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
-                }
-                else
-                {
+                } else {
                     Log.d("Knowsie", "User logged in through Twitter!");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);

@@ -12,7 +12,7 @@ Knowsie will support 3 social media sites: Facebook, Twitter, and Instagram. Use
 
 ## To do
 - [ ] Navigation drawer
-- [ ] Login screen
+- [x] Login screen
 - [ ] Settings screen
 - [ ] Facebook/Twitter/Instagram APIs
 - [ ] New group dialog

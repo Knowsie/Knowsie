@@ -38,7 +38,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
                 viewHolder.updateSource.setImageResource(R.drawable.ic_instagram);
                 break;
             case Update.TWITTER:
-                viewHolder.updateSource.setImageResource(R.drawable.ic_twitter);
+                viewHolder.updateSource.setImageResource(R.drawable.ic_twitter_blue);
                 break;
             default:
                 break;

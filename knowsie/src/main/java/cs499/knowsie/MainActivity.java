@@ -98,6 +98,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void logOut() {
+        Log.d(TAG, "logout()");
         ParseUser.logOut();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
@@ -130,6 +131,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
+        Log.d(TAG, "Exiting");
         finish();
     }
 }

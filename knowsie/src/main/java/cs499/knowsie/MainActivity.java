@@ -53,7 +53,7 @@ public class MainActivity extends ActionBarActivity {
         groups.add(new Group("Food"));
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.material_deep_teal_500));
+        drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.mainBlue));
 
         drawerToggle = new ActionBarDrawerToggle(
                 this,

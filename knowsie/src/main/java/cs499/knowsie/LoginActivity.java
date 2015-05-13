@@ -48,10 +48,12 @@ public class LoginActivity extends Activity {
                     Log.d("Knowsie", "User signed up and logged in through Twitter!");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 } else {
                     Log.d("Knowsie", "User logged in through Twitter!");
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         });

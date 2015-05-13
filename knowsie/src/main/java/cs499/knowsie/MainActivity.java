@@ -1,6 +1,6 @@
 package cs499.knowsie;
 
-import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
@@ -12,6 +12,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -67,8 +69,11 @@ public class MainActivity extends ActionBarActivity {
 
         drawerListView = (ListView) findViewById(R.id.nav_drawer);
         Log.d(TAG, "drawerListView.setAdapter");
+
         drawerListView.setAdapter(new GroupListAdapter(this, groups));
+
         drawerListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
         Log.d(TAG, "drawerListView.setOnItemClickListener");
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -81,14 +86,21 @@ public class MainActivity extends ActionBarActivity {
     private void selectItem(int position) {
         GroupFragment fragment = new GroupFragment();
 
-        FragmentManager fragmentManager = this.getFragmentManager();
-        fragmentManager.beginTransaction()
+        this.getFragmentManager().beginTransaction()
                 .replace(R.id.group_fragment, fragment)
                 .commit();
 
         drawerListView.setItemChecked(position, true);
         setTitle(groups.get(position).getGroupName());
+
+        Log.d(TAG, "Starting " + getTitle() + " Fragment");
         drawerLayout.closeDrawer(drawerListView);
+    }
+
+    public void logOut() {
+        ParseUser.logOut();
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
     @Override
@@ -105,11 +117,19 @@ public class MainActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_logout:
+                logOut();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 }

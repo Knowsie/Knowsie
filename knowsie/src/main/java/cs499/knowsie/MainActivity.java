@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.parse.ParseUser;
@@ -27,6 +28,7 @@ public class MainActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private ListView drawerListView;
+    private LinearLayout drawerLeft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,9 @@ public class MainActivity extends ActionBarActivity {
         groups.add(new Group("Family"));
         groups.add(new Group("Friends"));
         groups.add(new Group("Food"));
+        for (int i = 0; i < 20; i++) {
+            groups.add(new Group("Filler"));
+        }
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.mainBlue));
@@ -67,7 +72,9 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener");
 
-        drawerListView = (ListView) findViewById(R.id.nav_drawer);
+        drawerLeft = (LinearLayout) findViewById(R.id.nav_drawer);
+
+        drawerListView = (ListView) findViewById(R.id.drawer_list);
         Log.d(TAG, "drawerListView.setAdapter");
 
         drawerListView.setAdapter(new GroupListAdapter(this, groups));
@@ -94,7 +101,7 @@ public class MainActivity extends ActionBarActivity {
         setTitle(groups.get(position).getGroupName());
 
         Log.d(TAG, "Starting " + getTitle() + " Fragment");
-        drawerLayout.closeDrawer(drawerListView);
+        drawerLayout.closeDrawer(drawerLeft);
     }
 
     public void logOut() {

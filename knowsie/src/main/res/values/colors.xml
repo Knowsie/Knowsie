@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="primaryColor">#2196F3</color>
     <color name="mainBlue">#006799</color>
+    <color name="mainBrown">#603913</color>
+    <color name="mainGray">#707B80</color>
 </resources>

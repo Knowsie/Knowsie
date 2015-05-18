@@ -10,8 +10,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.parse.ParseUser;
@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private ListView drawerListView;
-    private LinearLayout drawerLeft;
+    private ViewGroup drawerListHeader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,14 +72,18 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener");
 
-        drawerLeft = (LinearLayout) findViewById(R.id.nav_drawer);
-
-        drawerListView = (ListView) findViewById(R.id.drawer_list);
+        drawerListView = (ListView) findViewById(R.id.nav_drawer);
         Log.d(TAG, "drawerListView.setAdapter");
-
         drawerListView.setAdapter(new GroupListAdapter(this, groups));
-
         drawerListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+
+        // Add header to ListView
+        Log.d(TAG, "addHeaderView");
+        drawerListHeader = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_header,
+                                                                   drawerListView,
+                                                                   false);
+        drawerListView.addHeaderView(drawerListHeader);
+        drawerListView.setHeaderDividersEnabled(true);
 
         Log.d(TAG, "drawerListView.setOnItemClickListener");
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -94,14 +98,14 @@ public class MainActivity extends ActionBarActivity {
         GroupFragment fragment = new GroupFragment();
 
         this.getFragmentManager().beginTransaction()
-                .replace(R.id.group_fragment, fragment)
-                .commit();
+            .replace(R.id.group_fragment, fragment)
+            .commit();
 
         drawerListView.setItemChecked(position, true);
         setTitle(groups.get(position).getGroupName());
 
         Log.d(TAG, "Starting " + getTitle() + " Fragment");
-        drawerLayout.closeDrawer(drawerLeft);
+        drawerLayout.closeDrawer(drawerListView);
     }
 
     public void logOut() {

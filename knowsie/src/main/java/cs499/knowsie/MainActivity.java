@@ -6,6 +6,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,12 +15,19 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
 import cs499.knowsie.adapters.GroupListAdapter;
 import cs499.knowsie.data.Group;
+import cs499.knowsie.services.TwitterApi;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.mime.TypedString;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
@@ -39,6 +47,7 @@ public class MainActivity extends ActionBarActivity {
         initToolbar();
         initNavDrawer();
         selectItem(0);
+        testTwitterApi();
     }
 
     public void initToolbar() {
@@ -113,6 +122,40 @@ public class MainActivity extends ActionBarActivity {
         ParseUser.logOut();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    public void testTwitterApi() {
+        String consumerKey = ParseTwitterUtils.getTwitter().getConsumerKey();
+        String consumerSecret = ParseTwitterUtils.getTwitter().getConsumerSecret();
+        String bearerToken = consumerKey + ":" + consumerSecret;
+        TypedString typedString = new TypedString("grant_type=client_credentials");
+
+        byte[] encodedToken = bearerToken.getBytes();
+        String base64Token = Base64.encodeToString(encodedToken, Base64.NO_WRAP);
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(TwitterApi.baseURL)
+                .build();
+
+        TwitterApi service = restAdapter.create(TwitterApi.class);
+
+        service.authorize("Basic " + base64Token,
+                          String.valueOf(typedString.length()),
+                          typedString,
+                          new Callback<Response>() {
+
+                              @Override
+                              public void success(Response response,
+                                                  Response response2) {
+                                  Log.d(TAG, response.getStatus() + "");
+                              }
+
+                              @Override
+                              public void failure(RetrofitError error) {
+                                  Log.d(TAG, "Failed: " + error.getMessage());
+                              }
+                          });
+
     }
 
     @Override

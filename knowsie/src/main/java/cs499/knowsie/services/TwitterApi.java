@@ -1,15 +1,23 @@
 package cs499.knowsie.services;
 
-import java.util.List;
-
-import cs499.knowsie.data.Tweet;
-import retrofit.http.GET;
-import retrofit.http.Query;
+import retrofit.Callback;
+import retrofit.client.Response;
+import retrofit.http.Body;
+import retrofit.http.Header;
+import retrofit.http.Headers;
+import retrofit.http.POST;
+import retrofit.mime.TypedString;
 
 public interface TwitterApi {
 
-    @GET("/statuses/user_timeline.json")
-    List<Tweet> getUserTimelineByScreenName(@Query("screen_name") String screenName,
-                                            @Query("max_id") int maxID,
-                                            @Query("count") int count);
+    String baseURL = "https://api.twitter.com";
+
+    @Headers({
+            "Content-Type: application/x-www-form-urlencoded;charset=UTF-8"
+    })
+    @POST("/oauth2/token")
+    void authorize(@Header("Authorization") String authorization,
+                   @Header("Content-Length") String bodyLength,
+                   @Body TypedString grantType,
+                   Callback<Response> cb);
 }

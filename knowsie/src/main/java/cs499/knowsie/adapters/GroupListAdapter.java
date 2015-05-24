@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import cs499.knowsie.R;
 import cs499.knowsie.data.Group;
@@ -15,9 +15,9 @@ import cs499.knowsie.data.Group;
 public class GroupListAdapter extends ArrayAdapter<Group> {
 
     private Context context;
-    private ArrayList<Group> groups;
+    private List<Group> groups;
 
-    public GroupListAdapter(Context context, ArrayList<Group> groups) {
+    public GroupListAdapter(Context context, List<Group> groups) {
         super(context, 0, groups);
         this.context = context;
         this.groups = groups;

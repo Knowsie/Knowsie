@@ -18,7 +18,7 @@ import android.widget.ListView;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import cs499.knowsie.adapters.GroupListAdapter;
 import cs499.knowsie.data.Group;
@@ -31,7 +31,8 @@ import retrofit.mime.TypedString;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
-    private ArrayList<Group> groups;
+    private ParseUser user;
+    private List<Group> groups;
     private DrawerLayout drawerLayout;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
@@ -43,6 +44,11 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
+
+        user = ParseUser.getCurrentUser();
+        user.add("groups", new Group("Friends"));
+        user.add("groups", new Group("Family"));
+        user.saveInBackground();
 
         initToolbar();
         initNavDrawer();
@@ -58,13 +64,8 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void initNavDrawer() {
-        groups = new ArrayList<Group>();
-        groups.add(new Group("Family"));
-        groups.add(new Group("Friends"));
-        groups.add(new Group("Food"));
-        for (int i = 0; i < 20; i++) {
-            groups.add(new Group("Filler"));
-        }
+        Log.d(TAG, "Retrieving user's list of groups");
+        groups = ParseUser.getCurrentUser().getList("groups");
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.mainBlue));
@@ -82,7 +83,7 @@ public class MainActivity extends ActionBarActivity {
         Log.d(TAG, "setDrawerListener");
 
         drawerListView = (ListView) findViewById(R.id.nav_drawer);
-        Log.d(TAG, "drawerListView.setAdapter");
+        Log.d(TAG, "drawerListView setAdapter");
         drawerListView.setAdapter(new GroupListAdapter(this, groups));
         drawerListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 

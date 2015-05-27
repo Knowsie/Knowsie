@@ -49,4 +49,9 @@ public class Group extends ParseObject {
     public void setUser(ParseUser user) {
         put("user", user);
     }
+
+    @Override
+    public String toString() {
+        return getGroupName();
+    }
 }

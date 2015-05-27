@@ -37,6 +37,7 @@ public class MainActivity extends ActionBarActivity {
     private ParseUser user;
     private List<Group> groups;
     private DrawerLayout drawerLayout;
+    private GroupListAdapter groupListAdapter;
     private Toolbar toolbar;
     private ActionBarDrawerToggle drawerToggle;
     private ListView drawerListView;
@@ -54,6 +55,9 @@ public class MainActivity extends ActionBarActivity {
         queryGroups();
     }
 
+    /**
+     * Initializes a Toolbar to replace the ActionBar.
+     */
     public void initToolbar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_nav_drawer);
@@ -61,6 +65,11 @@ public class MainActivity extends ActionBarActivity {
         Log.d(TAG, "setSupportActionBar");
     }
 
+    /**
+     * Query the groups associated with the current user
+     * to load in the navigation drawer. The first item is selected when
+     * opening the app.
+     */
     public void queryGroups() {
         Log.d(TAG, "Retrieving user's list of groups");
 
@@ -72,7 +81,9 @@ public class MainActivity extends ActionBarActivity {
             public void done(List<Group> groupsList, ParseException e) {
                 groups = groupsList;
                 initNavDrawer();
-                selectItem(0);
+
+                // Select the first item by default when opening the app, ignoring header view.
+                selectItem(drawerListView.getHeaderViewsCount());
             }
         });
     }
@@ -93,24 +104,28 @@ public class MainActivity extends ActionBarActivity {
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener");
 
-        drawerListView = (ListView) findViewById(R.id.nav_drawer);
-        Log.d(TAG, "drawerListView setAdapter");
-        drawerListView.setAdapter(new GroupListAdapter(this, groups));
-        drawerListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        groupListAdapter = new GroupListAdapter(this, groups);
 
-        // Add header to ListView
+        drawerListView = (ListView) findViewById(R.id.nav_drawer);
+
+        // Add non-selectable header to ListView.
         Log.d(TAG, "addHeaderView");
         drawerListHeader = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_header,
                                                                    drawerListView,
                                                                    false);
-        drawerListView.addHeaderView(drawerListHeader);
+
+        drawerListView.addHeaderView(drawerListHeader, null, false);
         drawerListView.setHeaderDividersEnabled(true);
+
+        Log.d(TAG, "drawerListView setAdapter");
+        drawerListView.setAdapter(groupListAdapter);
+        groupListAdapter.notifyDataSetChanged();
+        drawerListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 
         Log.d(TAG, "drawerListView.setOnItemClickListener");
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                // TODO why does it return the wrong position?
                 selectItem(position);
             }
         });
@@ -124,7 +139,11 @@ public class MainActivity extends ActionBarActivity {
             .commit();
 
         drawerListView.setItemChecked(position, true);
-        setTitle(groups.get(position).getGroupName());
+        Log.d(TAG, "Position: " + position + " , " + groups.toString());
+
+        // This method is used to account for the header view being counted.
+        Group g = (Group) drawerListView.getItemAtPosition(position);
+        setTitle(g.getGroupName());
 
         Log.d(TAG, "Starting " + getTitle() + " Fragment");
         drawerLayout.closeDrawer(drawerListView);

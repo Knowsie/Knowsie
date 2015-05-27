@@ -110,6 +110,7 @@ public class MainActivity extends ActionBarActivity {
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // TODO why does it return the wrong position?
                 selectItem(position);
             }
         });

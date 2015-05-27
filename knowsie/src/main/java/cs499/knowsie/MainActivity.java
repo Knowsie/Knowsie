@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 
@@ -46,14 +49,9 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         user = ParseUser.getCurrentUser();
-        user.add("groups", new Group("Friends"));
-        user.add("groups", new Group("Family"));
-        user.saveInBackground();
 
         initToolbar();
-        initNavDrawer();
-        selectItem(0);
-        testTwitterApi();
+        queryGroups();
     }
 
     public void initToolbar() {
@@ -63,10 +61,23 @@ public class MainActivity extends ActionBarActivity {
         Log.d(TAG, "setSupportActionBar");
     }
 
-    public void initNavDrawer() {
+    public void queryGroups() {
         Log.d(TAG, "Retrieving user's list of groups");
-        groups = ParseUser.getCurrentUser().getList("groups");
 
+        ParseQuery<Group> groupsParseQuery = ParseQuery.getQuery(Group.class);
+        groupsParseQuery.whereEqualTo("user", user);
+
+        groupsParseQuery.findInBackground(new FindCallback<Group>() {
+            @Override
+            public void done(List<Group> groupsList, ParseException e) {
+                groups = groupsList;
+                initNavDrawer();
+                selectItem(0);
+            }
+        });
+    }
+
+    public void initNavDrawer() {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawerLayout.setStatusBarBackgroundColor(getResources().getColor(R.color.mainBlue));
 

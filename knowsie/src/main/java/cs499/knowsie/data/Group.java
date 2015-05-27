@@ -2,6 +2,7 @@ package cs499.knowsie.data;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -12,7 +13,8 @@ public class Group extends ParseObject {
 
     }
 
-    public Group(String groupName) {
+    public Group(ParseUser user, String groupName) {
+        put("user", user);
         put("groupName", groupName);
     }
 
@@ -38,5 +40,13 @@ public class Group extends ParseObject {
 
     public void setGroupName(String groupName) {
         put("groupName", groupName);
+    }
+
+    public ParseUser getUser() {
+        return getParseUser("user");
+    }
+
+    public void setUser(ParseUser user) {
+        put("user", user);
     }
 }

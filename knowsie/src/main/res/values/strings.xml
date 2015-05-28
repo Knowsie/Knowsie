@@ -16,4 +16,7 @@
     <string name="login">Login</string>
     <string name="logout">Logout</string>
     <string name="twitter_signin">Sign in with Twitter</string>
+    <string name="group_name">Group name</string>
+    <string name="twitter_user">Twitter username</string>
+    <string name="instagram_user">Instagram username</string>
 </resources>

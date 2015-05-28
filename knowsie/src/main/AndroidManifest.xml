@@ -9,7 +9,6 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-
         android:name=".ParseApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -24,8 +23,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"/>
+        <activity android:name=".MainActivity"/>
+        <activity android:name=".AddGroupActivity"/>
     </application>
 
 </manifest>

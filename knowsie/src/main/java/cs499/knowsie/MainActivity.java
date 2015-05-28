@@ -15,11 +15,13 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 import java.util.List;
 
@@ -34,8 +36,10 @@ import retrofit.mime.TypedString;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = "MainActivity";
+    private static final int ADD_GROUP = 1;
     private ParseUser user;
     private List<Group> groups;
+    private FloatingActionButton fabButton;
     private DrawerLayout drawerLayout;
     private GroupListAdapter groupListAdapter;
     private Toolbar toolbar;
@@ -48,6 +52,14 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
+
+        fabButton = (FloatingActionButton) findViewById(R.id.fab_add);
+        fabButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addGroup();
+            }
+        });
 
         user = ParseUser.getCurrentUser();
 
@@ -129,6 +141,30 @@ public class MainActivity extends ActionBarActivity {
                 selectItem(position);
             }
         });
+    }
+
+    public void addGroup() {
+        Intent i = new Intent(this, AddGroupActivity.class);
+        startActivityForResult(i, ADD_GROUP);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == ADD_GROUP) {
+            if (resultCode == RESULT_OK) {
+                Group group;
+                group = new Group(user, data.getStringExtra("groupName"));
+                group.addTwitterUser(data.getStringExtra("twitterUser"));
+                group.addInstagramUser(data.getStringExtra("instagramUser"));
+                groups.add(group);
+                group.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(ParseException e) {
+                        groupListAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        }
     }
 
     private void selectItem(int position) {

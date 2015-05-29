@@ -18,3 +18,4 @@ Knowsie will support 3 social media sites: Facebook, Twitter, and Instagram. Use
 - [ ] Facebook/Twitter/Instagram APIs
   - [x] Twitter authorization
 - [x] Add new group activity
+- [ ] Push notification support

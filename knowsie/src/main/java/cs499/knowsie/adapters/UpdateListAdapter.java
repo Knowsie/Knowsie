@@ -44,10 +44,10 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         Update update = updates.get(position);
 
         switch (update.getSource()) {
-            case Update.INSTAGRAM:
+            case INSTAGRAM:
                 viewHolder.updateSource.setImageResource(R.drawable.ic_instagram);
                 break;
-            case Update.TWITTER:
+            case TWITTER:
                 viewHolder.updateSource.setImageResource(R.drawable.ic_twitter_blue);
                 break;
             default:
@@ -55,10 +55,8 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         }
 
         viewHolder.userName.setText(update.getUserName());
-
-        viewHolder.userHandle.setText(update.getUserHandle());
-
-        viewHolder.textContent.setText(update.getTextContent());
+        viewHolder.userHandle.setText(update.getScreenName());
+        viewHolder.textContent.setText(update.getText());
 
         return convertView;
     }

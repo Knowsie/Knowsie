@@ -1,18 +1,15 @@
 package cs499.knowsie.data;
 
 public class Update {
-
-    public static final String TWITTER = "Twitter";
-    public static final String INSTAGRAM = "Instagram";
     private String userName;
-    private String userHandle;
-    private String textContent;
-    private String source;
+    private String screenName;
+    private String text;
+    private Source source;
 
-    public Update(String userName, String userHandle, String textContent, String source) {
-        this.userName = userName;
-        this.userHandle = userHandle;
-        this.textContent = textContent;
+    public Update() {
+    }
+
+    public Update(Source source) {
         this.source = source;
     }
 
@@ -24,27 +21,32 @@ public class Update {
         this.userName = userName;
     }
 
-    public String getUserHandle() {
-        return userHandle;
+    public String getScreenName() {
+        return screenName;
     }
 
-    public void setUserHandle(String userHandle) {
-        this.userHandle = userHandle;
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
     }
 
-    public String getTextContent() {
-        return textContent;
+    public String getText() {
+        return text;
     }
 
-    public void setTextContent(String textContent) {
-        this.textContent = textContent;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getSource() {
+    public Source getSource() {
         return source;
     }
 
-    public void setSource(String source) {
+    public void setSource(Source source) {
         this.source = source;
+    }
+
+    public enum Source {
+        TWITTER,
+        INSTAGRAM
     }
 }

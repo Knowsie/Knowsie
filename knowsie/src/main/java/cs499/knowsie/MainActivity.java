@@ -28,8 +28,10 @@ import java.util.List;
 import cs499.knowsie.adapters.GroupListAdapter;
 import cs499.knowsie.data.AuthToken;
 import cs499.knowsie.data.Group;
+import cs499.knowsie.data.Tweet;
 import cs499.knowsie.services.TwitterApi;
 import retrofit.Callback;
+import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -47,6 +49,7 @@ public class MainActivity extends ActionBarActivity {
     private ActionBarDrawerToggle drawerToggle;
     private ListView drawerListView;
     private ViewGroup drawerListHeader;
+    private AuthToken twitterAuthToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
 
         initToolbar();
         queryGroups();
-        testTwitterApi();
+        authorizeTwitter();
     }
 
     /**
@@ -77,30 +80,6 @@ public class MainActivity extends ActionBarActivity {
         toolbar.setNavigationIcon(R.drawable.ic_nav_drawer);
         setSupportActionBar(toolbar);
         Log.d(TAG, "setSupportActionBar");
-    }
-
-    /**
-     * Query the groups associated with the current user
-     * to load in the navigation drawer. The first item is selected when
-     * opening the app.
-     */
-    public void queryGroups() {
-        Log.d(TAG, "Retrieving user's list of groups");
-
-        ParseQuery<Group> groupsParseQuery = ParseQuery.getQuery(Group.class);
-        groupsParseQuery.whereEqualTo("user", user);
-
-        groupsParseQuery.findInBackground(new FindCallback<Group>() {
-            @Override
-            public void done(List<Group> groupsList, ParseException e) {
-                groups = groupsList;
-                initNavDrawer();
-                initNavDrawerList();
-
-                // Select the first item by default when opening the app, ignoring header view.
-                selectItem(drawerListView.getHeaderViewsCount());
-            }
-        });
     }
 
     public void initNavDrawer() {
@@ -138,6 +117,30 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 selectItem(position);
+            }
+        });
+    }
+
+    /**
+     * Query the groups associated with the current user
+     * to load in the navigation drawer. The first item is selected when
+     * opening the app.
+     */
+    public void queryGroups() {
+        Log.d(TAG, "Retrieving user's list of groups");
+
+        ParseQuery<Group> groupsParseQuery = ParseQuery.getQuery(Group.class);
+        groupsParseQuery.whereEqualTo("user", user);
+
+        groupsParseQuery.findInBackground(new FindCallback<Group>() {
+            @Override
+            public void done(List<Group> groupsList, ParseException e) {
+                groups = groupsList;
+                initNavDrawer();
+                initNavDrawerList();
+
+                // Select the first item by default when opening the app, ignoring header view.
+                selectItem(drawerListView.getHeaderViewsCount());
             }
         });
     }
@@ -196,14 +199,14 @@ public class MainActivity extends ActionBarActivity {
         finish();
     }
 
-    public void testTwitterApi() {
+    public void authorizeTwitter() {
+        // Generate header for token
         String consumerKey = ParseTwitterUtils.getTwitter().getConsumerKey();
         String consumerSecret = ParseTwitterUtils.getTwitter().getConsumerSecret();
         String bearerToken = consumerKey + ":" + consumerSecret;
-        TypedString typedString = new TypedString("grant_type=client_credentials");
+        String base64Token = Base64.encodeToString(bearerToken.getBytes(), Base64.NO_WRAP);
 
-        byte[] encodedToken = bearerToken.getBytes();
-        String base64Token = Base64.encodeToString(encodedToken, Base64.NO_WRAP);
+        TypedString requestBody = new TypedString("grant_type=client_credentials");
 
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(TwitterApi.baseURL)
@@ -212,14 +215,15 @@ public class MainActivity extends ActionBarActivity {
         TwitterApi service = restAdapter.create(TwitterApi.class);
 
         service.authorize("Basic " + base64Token,
-                          typedString,
+                          requestBody,
                           new Callback<AuthToken>() {
-
                               @Override
                               public void success(AuthToken authToken,
                                                   Response response) {
-                                  Log.d(TAG, "Token: " + authToken.tokenType);
+                                  twitterAuthToken = authToken;
+                                  Log.d(TAG, "Token: " + twitterAuthToken.accessToken);
                                   Log.d(TAG, "Status: " + response.getStatus());
+                                  getTweets();
                               }
 
                               @Override
@@ -228,6 +232,33 @@ public class MainActivity extends ActionBarActivity {
                               }
                           });
 
+    }
+
+    public void getTweets() {
+        RequestInterceptor requestInterceptor = new RequestInterceptor() {
+            @Override
+            public void intercept(RequestFacade request) {
+                request.addHeader("Authorization", "Bearer " + twitterAuthToken.accessToken);
+            }
+        };
+
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(TwitterApi.baseURL)
+                .setRequestInterceptor(requestInterceptor)
+                .build();
+
+        TwitterApi service = restAdapter.create(TwitterApi.class);
+        service.getUserTimeline("dscarra", 3, new Callback<List<Tweet>>() {
+            @Override
+            public void success(List<Tweet> tweets, Response response) {
+                Log.d(TAG, "dscarra: " + tweets.size());
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d(TAG, "Failed: " + error.getMessage());
+            }
+        });
     }
 
     @Override

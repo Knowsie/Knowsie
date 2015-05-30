@@ -26,6 +26,7 @@ import com.parse.SaveCallback;
 import java.util.List;
 
 import cs499.knowsie.adapters.GroupListAdapter;
+import cs499.knowsie.data.AuthToken;
 import cs499.knowsie.data.Group;
 import cs499.knowsie.services.TwitterApi;
 import retrofit.Callback;
@@ -65,6 +66,7 @@ public class MainActivity extends ActionBarActivity {
 
         initToolbar();
         queryGroups();
+        testTwitterApi();
     }
 
     /**
@@ -93,6 +95,7 @@ public class MainActivity extends ActionBarActivity {
             public void done(List<Group> groupsList, ParseException e) {
                 groups = groupsList;
                 initNavDrawer();
+                initNavDrawerList();
 
                 // Select the first item by default when opening the app, ignoring header view.
                 selectItem(drawerListView.getHeaderViewsCount());
@@ -115,26 +118,22 @@ public class MainActivity extends ActionBarActivity {
         // Open nav drawer when nav icon is tapped
         drawerLayout.setDrawerListener(drawerToggle);
         Log.d(TAG, "setDrawerListener");
+    }
 
+    public void initNavDrawerList() {
         groupListAdapter = new GroupListAdapter(this, groups);
 
         drawerListView = (ListView) findViewById(R.id.nav_drawer);
 
         // Add non-selectable header to ListView.
-        Log.d(TAG, "addHeaderView");
         drawerListHeader = (ViewGroup) getLayoutInflater().inflate(R.layout.listview_header,
                                                                    drawerListView,
                                                                    false);
-
         drawerListView.addHeaderView(drawerListHeader, null, false);
         drawerListView.setHeaderDividersEnabled(true);
-
-        Log.d(TAG, "drawerListView setAdapter");
         drawerListView.setAdapter(groupListAdapter);
-        groupListAdapter.notifyDataSetChanged();
         drawerListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
-
-        Log.d(TAG, "drawerListView.setOnItemClickListener");
+        groupListAdapter.notifyDataSetChanged();
         drawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -152,11 +151,11 @@ public class MainActivity extends ActionBarActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == ADD_GROUP) {
             if (resultCode == RESULT_OK) {
-                Group group;
-                group = new Group(user, data.getStringExtra("groupName"));
+                Group group = new Group(user, data.getStringExtra("groupName"));
                 group.addTwitterUser(data.getStringExtra("twitterUser"));
                 group.addInstagramUser(data.getStringExtra("instagramUser"));
                 groups.add(group);
+
                 group.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
@@ -168,6 +167,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void selectItem(int position) {
+        if (groupListAdapter.isEmpty()) {
+            return;
+        }
+
         GroupFragment fragment = new GroupFragment();
 
         this.getFragmentManager().beginTransaction()
@@ -179,7 +182,8 @@ public class MainActivity extends ActionBarActivity {
 
         // This method is used to account for the header view being counted.
         Group g = (Group) drawerListView.getItemAtPosition(position);
-        setTitle(g.getGroupName());
+
+        toolbar.setSubtitle(g.getGroupName());
 
         Log.d(TAG, "Starting " + getTitle() + " Fragment");
         drawerLayout.closeDrawer(drawerListView);
@@ -208,14 +212,14 @@ public class MainActivity extends ActionBarActivity {
         TwitterApi service = restAdapter.create(TwitterApi.class);
 
         service.authorize("Basic " + base64Token,
-                          String.valueOf(typedString.length()),
                           typedString,
-                          new Callback<Response>() {
+                          new Callback<AuthToken>() {
 
                               @Override
-                              public void success(Response response,
-                                                  Response response2) {
-                                  Log.d(TAG, response.getStatus() + "");
+                              public void success(AuthToken authToken,
+                                                  Response response) {
+                                  Log.d(TAG, "Token: " + authToken.tokenType);
+                                  Log.d(TAG, "Status: " + response.getStatus());
                               }
 
                               @Override

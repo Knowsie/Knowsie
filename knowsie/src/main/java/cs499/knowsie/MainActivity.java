@@ -175,11 +175,13 @@ public class MainActivity extends ActionBarActivity {
 
         GroupFragment fragment = new GroupFragment();
 
-        Bundle bundle = new Bundle();
-        bundle.putString("accessToken", twitterAuthToken.accessToken);
-        bundle.putStringArray("twitterUsers",
-                              twitterUsers.toArray(new String[twitterUsers.size()]));
-        fragment.setArguments(bundle);
+        if (twitterUsers != null) {
+            Bundle bundle = new Bundle();
+            bundle.putString("accessToken", twitterAuthToken.accessToken);
+            bundle.putStringArray("twitterUsers",
+                                  twitterUsers.toArray(new String[twitterUsers.size()]));
+            fragment.setArguments(bundle);
+        }
 
         this.getFragmentManager().beginTransaction()
             .replace(R.id.group_fragment, fragment)

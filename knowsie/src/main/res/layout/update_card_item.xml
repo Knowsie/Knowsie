@@ -34,10 +34,10 @@
 
                 <ImageView
                     android:id="@+id/update_src"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:contentDescription="Source"
-                    android:src="@drawable/ic_update_src" />
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:scaleX=".9"
+                    android:scaleY=".9"/>
 
                 <TextView
                     android:id="@+id/user_name"

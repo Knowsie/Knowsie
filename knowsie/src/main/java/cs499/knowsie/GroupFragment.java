@@ -2,6 +2,7 @@ package cs499.knowsie;
 
 import android.app.ListFragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,12 +39,13 @@ public class GroupFragment extends ListFragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_group, container, false);
 
-        twitterUsers = getArguments().getStringArray("twitterUsers");
-        accessToken = getArguments().getString("accessToken");
-
         updateList = new ArrayList<>();
-
-        load();
+        Bundle args = getArguments();
+        if (args != null) {
+            twitterUsers = getArguments().getStringArray("twitterUsers");
+            accessToken = getArguments().getString("accessToken");
+            load();
+        }
 
         updateListAdapter = new UpdateListAdapter(view.getContext(), updateList);
         setListAdapter(updateListAdapter);
@@ -92,6 +94,11 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadMoreUpdates(long id) {
+        if (service == null) {
+            return;
+        }
+
+        Log.d("GroupFragment", "Loading more");
         service.getUserTimeline("aphromoo", count, id, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {

@@ -67,7 +67,6 @@ public class MainActivity extends ActionBarActivity {
 
         initToolbar();
         queryGroups();
-        authorizeTwitter();
     }
 
     /**
@@ -136,9 +135,7 @@ public class MainActivity extends ActionBarActivity {
                 groups = groupsList;
                 initNavDrawer();
                 initNavDrawerList();
-
-                // Select the first item by default when opening the app, ignoring header view.
-                selectItem(drawerListView.getHeaderViewsCount());
+                authorizeTwitter();
             }
         });
     }
@@ -226,6 +223,8 @@ public class MainActivity extends ActionBarActivity {
                               public void success(AuthToken authToken,
                                                   Response response) {
                                   twitterAuthToken = authToken;
+                                  // Select the first item by default when opening the app, ignoring header view.
+                                  selectItem(drawerListView.getHeaderViewsCount());
                                   Log.d(TAG, "Successfully retrieved auth token");
                               }
 

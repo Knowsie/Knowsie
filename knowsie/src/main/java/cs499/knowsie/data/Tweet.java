@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 public class Tweet extends Update {
     private TwitterUser user;
-    private Media media;
+    private Entity entity;
 
     public Tweet() {
     }
@@ -24,11 +24,23 @@ public class Tweet extends Update {
         return Source.TWITTER;
     }
 
+    public Media getMedia() {
+        return entity.media;
+    }
+
+    public String getMediaURL() {
+        return entity.media.mediaURL;
+    }
+
     private class TwitterUser {
         String name;
 
         @SerializedName("screen_name")
         String screenName;
+    }
+
+    private class Entity {
+        Media media;
     }
 
     private class Media {

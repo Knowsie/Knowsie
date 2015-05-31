@@ -36,6 +36,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
             viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
             viewHolder.userHandle = (TextView) convertView.findViewById(R.id.user_handle);
             viewHolder.textContent = (TextView) convertView.findViewById(R.id.text_content);
+            viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_content);
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -54,6 +55,9 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
                 break;
         }
 
+        viewHolder.imageView.setVisibility(View.GONE);
+//        viewHolder.textContent.setPaddingRelative(16, 0, 16, 16);
+
         viewHolder.userName.setText(update.getUserName());
         viewHolder.userHandle.setText("@" + update.getScreenName());
         viewHolder.textContent.setText(update.getText());
@@ -66,5 +70,6 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         TextView userName;
         TextView userHandle;
         TextView textContent;
+        ImageView imageView;
     }
 }

@@ -27,7 +27,6 @@ public interface TwitterApi {
     void getUserTimeline(@Query("screen_name") String screenName,
                          @Query("count") int count,
                          @Query("max_id") long maxID,
-                         @Query("since_id") long sinceID,
                          Callback<List<Tweet>> cb);
 
     @GET("/1.1/statuses/user_timeline.json")

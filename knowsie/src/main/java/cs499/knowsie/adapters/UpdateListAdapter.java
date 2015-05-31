@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import cs499.knowsie.R;
 import cs499.knowsie.data.Update;
@@ -16,9 +16,9 @@ import cs499.knowsie.data.Update;
 public class UpdateListAdapter extends ArrayAdapter<Update> {
 
     private Context context;
-    private ArrayList<Update> updates;
+    private List<Update> updates;
 
-    public UpdateListAdapter(Context context, ArrayList<Update> updates) {
+    public UpdateListAdapter(Context context, List<Update> updates) {
         super(context, R.layout.update_card_item, updates);
         this.context = context;
         this.updates = updates;
@@ -55,7 +55,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         }
 
         viewHolder.userName.setText(update.getUserName());
-        viewHolder.userHandle.setText(update.getScreenName());
+        viewHolder.userHandle.setText("@" + update.getScreenName());
         viewHolder.textContent.setText(update.getText());
 
         return convertView;

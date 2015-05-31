@@ -174,7 +174,17 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
 
+        // This method is used to account for the header view being counted.
+        Group g = (Group) drawerListView.getItemAtPosition(position);
+        List<String> twitterUsers = g.getTwitterUsers();
+
         GroupFragment fragment = new GroupFragment();
+
+        Bundle bundle = new Bundle();
+        bundle.putString("accessToken", twitterAuthToken.accessToken);
+        bundle.putStringArray("twitterUsers",
+                              twitterUsers.toArray(new String[twitterUsers.size()]));
+        fragment.setArguments(bundle);
 
         this.getFragmentManager().beginTransaction()
             .replace(R.id.group_fragment, fragment)
@@ -182,9 +192,6 @@ public class MainActivity extends ActionBarActivity {
 
         drawerListView.setItemChecked(position, true);
         Log.d(TAG, "Position: " + position + " , " + groups.toString());
-
-        // This method is used to account for the header view being counted.
-        Group g = (Group) drawerListView.getItemAtPosition(position);
 
         toolbar.setSubtitle(g.getGroupName());
 
@@ -221,9 +228,7 @@ public class MainActivity extends ActionBarActivity {
                               public void success(AuthToken authToken,
                                                   Response response) {
                                   twitterAuthToken = authToken;
-                                  Log.d(TAG, "Token: " + twitterAuthToken.accessToken);
-                                  Log.d(TAG, "Status: " + response.getStatus());
-                                  getTweets();
+                                  Log.d(TAG, "Successfully retrieved auth token");
                               }
 
                               @Override

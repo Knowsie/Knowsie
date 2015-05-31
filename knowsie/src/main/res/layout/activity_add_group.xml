@@ -14,6 +14,9 @@
         android:layout_width="fill_parent"
         android:layout_height="48dp"
         android:hint="@string/group_name"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:singleLine="true"
         android:textSize="24sp"/>
 
     <ImageView
@@ -31,6 +34,9 @@
         android:layout_below="@id/group_name"
         android:layout_toRightOf="@id/twitter_icon"
         android:hint="@string/twitter_user"
+        android:imeOptions="actionNext"
+        android:inputType="text"
+        android:singleLine="true"
         android:textSize="16sp"/>
 
     <ImageView
@@ -48,6 +54,9 @@
         android:layout_below="@id/twitter_user"
         android:layout_toRightOf="@id/instagram_icon"
         android:hint="@string/instagram_user"
+        android:imeOptions="actionDone"
+        android:inputType="text"
+        android:singleLine="true"
         android:textSize="16sp"/>
 
     <Button

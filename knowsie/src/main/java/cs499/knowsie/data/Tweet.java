@@ -7,7 +7,6 @@ public class Tweet extends Update {
     private Media media;
 
     public Tweet() {
-        super(Source.TWITTER);
     }
 
     @Override
@@ -18,6 +17,11 @@ public class Tweet extends Update {
     @Override
     public String getScreenName() {
         return user.screenName;
+    }
+
+    @Override
+    public Source getSource() {
+        return Source.TWITTER;
     }
 
     private class TwitterUser {

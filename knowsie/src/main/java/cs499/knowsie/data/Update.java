@@ -1,10 +1,14 @@
 package cs499.knowsie.data;
 
+import java.util.Date;
+
 public class Update {
     private String userName;
     private String screenName;
     private String text;
     private Source source;
+    private Date date;
+    private long id;
 
     public Update() {
     }
@@ -43,6 +47,14 @@ public class Update {
 
     public void setSource(Source source) {
         this.source = source;
+    }
+
+    public long getID() {
+        return id;
+    }
+
+    public void setID(long id) {
+        this.id = id;
     }
 
     public enum Source {

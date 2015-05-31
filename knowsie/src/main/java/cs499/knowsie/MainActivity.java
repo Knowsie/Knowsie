@@ -28,10 +28,8 @@ import java.util.List;
 import cs499.knowsie.adapters.GroupListAdapter;
 import cs499.knowsie.data.AuthToken;
 import cs499.knowsie.data.Group;
-import cs499.knowsie.data.Tweet;
 import cs499.knowsie.services.TwitterApi;
 import retrofit.Callback;
-import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -237,33 +235,6 @@ public class MainActivity extends ActionBarActivity {
                               }
                           });
 
-    }
-
-    public void getTweets() {
-        RequestInterceptor requestInterceptor = new RequestInterceptor() {
-            @Override
-            public void intercept(RequestFacade request) {
-                request.addHeader("Authorization", "Bearer " + twitterAuthToken.accessToken);
-            }
-        };
-
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(TwitterApi.baseURL)
-                .setRequestInterceptor(requestInterceptor)
-                .build();
-
-        TwitterApi service = restAdapter.create(TwitterApi.class);
-        service.getUserTimeline("dscarra", 3, new Callback<List<Tweet>>() {
-            @Override
-            public void success(List<Tweet> tweets, Response response) {
-                Log.d(TAG, "dscarra: " + tweets.size());
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.d(TAG, "Failed: " + error.getMessage());
-            }
-        });
     }
 
     @Override

@@ -184,9 +184,7 @@ public class GroupFragment extends ListFragment {
                                                      updateList.addAll(instagramPosts.getData());
                                                      updateListAdapter.notifyDataSetChanged();
 
-                                                     if (instagramPosts.getLastID() != null) {
-                                                         instaMaxID = instagramPosts.getLastID();
-                                                     }
+                                                     instaMaxID = instagramPosts.getLastID();
                                                  }
 
                                                  @Override

@@ -148,7 +148,9 @@ public class GroupFragment extends ListFragment {
                                                      updateList.addAll(instagramPosts.getData());
                                                      updateListAdapter.notifyDataSetChanged();
 
-                                                     instaMaxID = instagramPosts.getLastID();
+                                                     if (instagramPosts.getLastID() != null) {
+                                                         instaMaxID = instagramPosts.getLastID();
+                                                     }
                                                  }
 
                                                  @Override
@@ -167,6 +169,9 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadMoreInstaPosts(String id) {
+        if (instaMaxID == null) {
+            return;
+        }
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
             @Override
             public void success(final InstagramUser instagramUser, Response response) {
@@ -179,7 +184,9 @@ public class GroupFragment extends ListFragment {
                                                      updateList.addAll(instagramPosts.getData());
                                                      updateListAdapter.notifyDataSetChanged();
 
-                                                     instaMaxID = instagramPosts.getLastID();
+                                                     if (instagramPosts.getLastID() != null) {
+                                                         instaMaxID = instagramPosts.getLastID();
+                                                     }
                                                  }
 
                                                  @Override

@@ -118,7 +118,9 @@ public class GroupFragment extends ListFragment {
                 updateList.addAll(tweets);
                 updateListAdapter.notifyDataSetChanged();
 
-                tweetMaxID = tweets.get(tweets.size() - 1).getID();
+                if (!tweets.isEmpty()) {
+                    tweetMaxID = tweets.get(tweets.size() - 1).getID();
+                }
             }
 
             @Override

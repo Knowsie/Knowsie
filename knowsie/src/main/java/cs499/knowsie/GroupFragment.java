@@ -12,8 +12,11 @@ import java.util.List;
 
 import cs499.knowsie.adapters.InfiniteScrollListener;
 import cs499.knowsie.adapters.UpdateListAdapter;
+import cs499.knowsie.data.InstagramPosts;
+import cs499.knowsie.data.InstagramUser;
 import cs499.knowsie.data.Tweet;
 import cs499.knowsie.data.Update;
+import cs499.knowsie.services.InstagramApi;
 import cs499.knowsie.services.TwitterApi;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
@@ -26,12 +29,17 @@ public class GroupFragment extends ListFragment {
     private UpdateListAdapter updateListAdapter;
     private List<Update> updateList;
     private String[] twitterUsers;
-    private String accessToken;
+    private String[] instaUsers;
+    private String twitterAccessToken;
+    private String instaAccessToken;
     private int count = 5;
-    private long maxID;
+    private long tweetMaxID;
+    private String instaMaxID;
     private RequestInterceptor requestInterceptor;
-    private RestAdapter restAdapter;
-    private TwitterApi service;
+    private RestAdapter twitterRestAdapter;
+    private RestAdapter instaRestAdapter;
+    private InstagramApi instagramService;
+    private TwitterApi twitterService;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -43,8 +51,11 @@ public class GroupFragment extends ListFragment {
         Bundle args = getArguments();
         if (args != null) {
             twitterUsers = getArguments().getStringArray("twitterUsers");
-            accessToken = getArguments().getString("accessToken");
-            load();
+            instaUsers = getArguments().getStringArray("instagramUsers");
+            twitterAccessToken = getArguments().getString("twitterAccessToken");
+            instaAccessToken = getArguments().getString("instagramAccessToken");
+            loadTwitter();
+            loadInstaPosts();
         }
 
         updateListAdapter = new UpdateListAdapter(view.getContext(), updateList);
@@ -59,32 +70,34 @@ public class GroupFragment extends ListFragment {
         getListView().setOnScrollListener(new InfiniteScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                loadMoreUpdates(maxID - 1);
+                loadMoreTweets(tweetMaxID - 1);
+                loadMoreInstaPosts(instaMaxID);
             }
         });
     }
 
-    public void load() {
+    public void loadTwitter() {
         requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
-                request.addHeader("Authorization", "Bearer " + accessToken);
+                request.addHeader("Authorization", "Bearer " + twitterAccessToken);
             }
         };
 
-        restAdapter = new RestAdapter.Builder()
+        twitterRestAdapter = new RestAdapter.Builder()
                 .setEndpoint(TwitterApi.baseURL)
                 .setRequestInterceptor(requestInterceptor)
                 .build();
 
-        service = restAdapter.create(TwitterApi.class);
-        service.getUserTimeline("aphromoo", count, new Callback<List<Tweet>>() {
+        twitterService = twitterRestAdapter.create(TwitterApi.class);
+
+        twitterService.getUserTimeline(twitterUsers[0], count, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
                 updateList.addAll(tweets);
                 updateListAdapter.notifyDataSetChanged();
 
-                maxID = updateList.get(updateList.size() - 1).getID();
+                tweetMaxID = updateList.get(updateList.size() - 1).getID();
             }
 
             @Override
@@ -93,23 +106,91 @@ public class GroupFragment extends ListFragment {
         });
     }
 
-    public void loadMoreUpdates(long id) {
-        if (service == null) {
+    public void loadMoreTweets(long id) {
+        if (twitterService == null) {
             return;
         }
 
         Log.d("GroupFragment", "Loading more");
-        service.getUserTimeline("aphromoo", count, id, new Callback<List<Tweet>>() {
+        twitterService.getUserTimeline(twitterUsers[0], count, id, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
                 updateList.addAll(tweets);
                 updateListAdapter.notifyDataSetChanged();
 
-                maxID = updateList.get(updateList.size() - 1).getID();
+                tweetMaxID = tweets.get(tweets.size() - 1).getID();
             }
 
             @Override
             public void failure(RetrofitError error) {
+            }
+        });
+    }
+
+    public void loadInstaPosts() {
+        instaRestAdapter = new RestAdapter.Builder()
+                .setEndpoint(InstagramApi.baseURL)
+                .build();
+
+        instagramService = instaRestAdapter.create(InstagramApi.class);
+
+        instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
+            @Override
+            public void success(final InstagramUser instagramUser, Response response) {
+                instagramService.getUserFeed(instagramUser.getID(), 5, instaAccessToken,
+                                             new Callback<InstagramPosts>() {
+                                                 @Override
+                                                 public void success(InstagramPosts instagramPosts,
+                                                                     Response response) {
+                                                     instagramPosts.setAllFullNames(instagramUser.getFullName());
+                                                     updateList.addAll(instagramPosts.getData());
+                                                     updateListAdapter.notifyDataSetChanged();
+
+                                                     instaMaxID = instagramPosts.getLastID();
+                                                 }
+
+                                                 @Override
+                                                 public void failure(RetrofitError error) {
+                                                     Log.d("GroupFragment", error.getMessage());
+
+                                                 }
+                                             });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("GroupFragment", error.getMessage());
+            }
+        });
+    }
+
+    public void loadMoreInstaPosts(String id) {
+        instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
+            @Override
+            public void success(final InstagramUser instagramUser, Response response) {
+                instagramService.getUserFeed(instagramUser.getID(), 5, instaMaxID, instaAccessToken,
+                                             new Callback<InstagramPosts>() {
+                                                 @Override
+                                                 public void success(InstagramPosts instagramPosts,
+                                                                     Response response) {
+                                                     instagramPosts.setAllFullNames(instagramUser.getFullName());
+                                                     updateList.addAll(instagramPosts.getData());
+                                                     updateListAdapter.notifyDataSetChanged();
+
+                                                     instaMaxID = instagramPosts.getLastID();
+                                                 }
+
+                                                 @Override
+                                                 public void failure(RetrofitError error) {
+                                                     Log.d("GroupFragment", error.getMessage());
+
+                                                 }
+                                             });
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Log.d("GroupFragment", error.getMessage());
             }
         });
     }

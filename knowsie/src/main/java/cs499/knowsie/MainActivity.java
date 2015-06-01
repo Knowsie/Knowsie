@@ -150,14 +150,19 @@ public class MainActivity extends ActionBarActivity {
         if (requestCode == ADD_GROUP) {
             if (resultCode == RESULT_OK) {
                 Group group = new Group(user, data.getStringExtra("groupName"));
-                group.addTwitterUser(data.getStringExtra("twitterUser"));
-                group.addInstagramUser(data.getStringExtra("instagramUser"));
+                if (data.getStringExtra("twitterUser") != null) {
+                    group.addTwitterUser(data.getStringExtra("twitterUser"));
+                }
+                if (data.getStringExtra("instagramUser") != null) {
+                    group.addInstagramUser(data.getStringExtra("instagramUser"));
+                }
                 groups.add(group);
 
                 group.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         groupListAdapter.notifyDataSetChanged();
+                        selectItem(groupListAdapter.getCount());
                     }
                 });
             }
@@ -172,14 +177,19 @@ public class MainActivity extends ActionBarActivity {
         // This method is used to account for the header view being counted.
         Group g = (Group) drawerListView.getItemAtPosition(position);
         List<String> twitterUsers = g.getTwitterUsers();
+        List<String> instagramUsers = g.getInstagramUsers();
 
         GroupFragment fragment = new GroupFragment();
 
         if (twitterUsers != null) {
             Bundle bundle = new Bundle();
-            bundle.putString("accessToken", twitterAuthToken.accessToken);
+            bundle.putString("twitterAccessToken", twitterAuthToken.accessToken);
+            bundle.putString("instagramAccessToken",
+                             getIntent().getStringExtra("instagramAccessToken"));
             bundle.putStringArray("twitterUsers",
                                   twitterUsers.toArray(new String[twitterUsers.size()]));
+            bundle.putStringArray("instagramUsers",
+                                  instagramUsers.toArray(new String[instagramUsers.size()]));
             fragment.setArguments(bundle);
         }
 
@@ -192,7 +202,7 @@ public class MainActivity extends ActionBarActivity {
 
         toolbar.setSubtitle(g.getGroupName());
 
-        Log.d(TAG, "Starting " + getTitle() + " Fragment");
+        Log.d(TAG, "Starting " + toolbar.getSubtitle() + " Fragment");
         drawerLayout.closeDrawer(drawerListView);
     }
 

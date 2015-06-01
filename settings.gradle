@@ -1,1 +1,2 @@
 include ':knowsie'
+include ':instagram_android'

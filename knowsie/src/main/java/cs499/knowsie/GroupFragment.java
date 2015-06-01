@@ -168,14 +168,14 @@ public class GroupFragment extends ListFragment {
         });
     }
 
-    public void loadMoreInstaPosts(String id) {
-        if (instaMaxID == null) {
+    public void loadMoreInstaPosts(final String id) {
+        if (id == null) {
             return;
         }
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
             @Override
             public void success(final InstagramUser instagramUser, Response response) {
-                instagramService.getUserFeed(instagramUser.getID(), 5, instaMaxID, instaAccessToken,
+                instagramService.getUserFeed(instagramUser.getID(), 5, id, instaAccessToken,
                                              new Callback<InstagramPosts>() {
                                                  @Override
                                                  public void success(InstagramPosts instagramPosts,

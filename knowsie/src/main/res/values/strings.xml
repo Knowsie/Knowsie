@@ -17,7 +17,7 @@
     <string name="logout">Logout</string>
     <string name="twitter_signin">Sign in with Twitter</string>
     <string name="instagram_signin">Sign in with Instagram</string>
-    <string name="group_name">Group name</string>
+    <string name="group_name">Name</string>
     <string name="twitter_user">Twitter username</string>
     <string name="instagram_user">Instagram username</string>
     <string name="empty_list">No items to display.</string>

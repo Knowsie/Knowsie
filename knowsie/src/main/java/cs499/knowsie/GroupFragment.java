@@ -4,6 +4,9 @@ import android.app.ListFragment;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -45,6 +48,7 @@ public class GroupFragment extends ListFragment {
     public View onCreateView(LayoutInflater inflater,
                              ViewGroup container,
                              Bundle savedInstanceState) {
+        setHasOptionsMenu(true);
         View view = inflater.inflate(R.layout.fragment_group, container, false);
 
         updateList = new ArrayList<>();
@@ -54,7 +58,8 @@ public class GroupFragment extends ListFragment {
             instaUsers = getArguments().getStringArray("instagramUsers");
             twitterAccessToken = getArguments().getString("twitterAccessToken");
             instaAccessToken = getArguments().getString("instagramAccessToken");
-            loadTwitter();
+            initAdaptersAndServices();
+            loadTweets();
             loadInstaPosts();
         }
 
@@ -76,7 +81,7 @@ public class GroupFragment extends ListFragment {
         });
     }
 
-    public void loadTwitter() {
+    public void initAdaptersAndServices() {
         requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
@@ -91,6 +96,14 @@ public class GroupFragment extends ListFragment {
 
         twitterService = twitterRestAdapter.create(TwitterApi.class);
 
+        instaRestAdapter = new RestAdapter.Builder()
+                .setEndpoint(InstagramApi.baseURL)
+                .build();
+
+        instagramService = instaRestAdapter.create(InstagramApi.class);
+    }
+
+    public void loadTweets() {
         twitterService.getUserTimeline(twitterUsers[0], count, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
@@ -130,12 +143,6 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadInstaPosts() {
-        instaRestAdapter = new RestAdapter.Builder()
-                .setEndpoint(InstagramApi.baseURL)
-                .build();
-
-        instagramService = instaRestAdapter.create(InstagramApi.class);
-
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
             @Override
             public void success(final InstagramUser instagramUser, Response response) {
@@ -200,5 +207,32 @@ public class GroupFragment extends ListFragment {
                 Log.d("GroupFragment", error.getMessage());
             }
         });
+    }
+
+    public void refresh() {
+        updateList.clear();
+        loadTweets();
+        loadInstaPosts();
+        updateListAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_group, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        switch (id) {
+            case R.id.action_settings:
+                return true;
+            case R.id.action_refresh:
+                refresh();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

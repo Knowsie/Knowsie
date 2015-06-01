@@ -8,7 +8,7 @@ Currently, there are a plethora of social media applications; and it’s making 
 Knowsie is an Android app designed to help you keep track of important individuals in your life. The concept is simple: declare which usernames you would like to monitor and group them accordingly. The Knowsie Newsfeed will only contain updates from those most important to you.
 
 ## Scope
-Knowsie currently supports two social media websites: Twitter and Instagram. Users can choose the social media, enter the specific username they would like to monitor, and group them with other users (i.e. Family, Celebrities, Significant Other). Our application currently supports user registration, modify/delete groups, and push notifications. 
+Knowsie currently supports 2 social media websites: Twitter and Instagram. Users can choose the social media, enter the specific username they would like to monitor, and group them with other users (i.e. Family, Celebrities, Significant Other). Our application currently supports user registration, username selection, and group creation.  
 
 ## Future Goals
 - [ ] Support Facebook, Tumblr, and other social media

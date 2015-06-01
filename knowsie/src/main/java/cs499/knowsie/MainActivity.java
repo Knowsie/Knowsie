@@ -23,6 +23,9 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import net.londatiga.android.instagram.Instagram;
+import net.londatiga.android.instagram.InstagramSession;
+
 import java.util.List;
 
 import cs499.knowsie.adapters.GroupListAdapter;
@@ -209,6 +212,8 @@ public class MainActivity extends ActionBarActivity {
     public void logOut() {
         Log.d(TAG, "logout()");
         ParseUser.logOut();
+        InstagramSession instagram = new InstagramSession(this);
+        instagram.reset();
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

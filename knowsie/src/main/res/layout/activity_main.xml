@@ -24,6 +24,7 @@
             android:id="@+id/group_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/knowsie_background"
             android:layout_below="@id/toolbar" />
 
         <com.getbase.floatingactionbutton.AddFloatingActionButton

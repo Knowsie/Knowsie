@@ -45,7 +45,6 @@
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/update_src"
                     android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:text="Username"
                     android:textColor="#000000" />
 
                 <TextView
@@ -54,15 +53,15 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/user_name"
                     android:layout_toEndOf="@id/update_src"
-                    android:paddingStart="@dimen/activity_horizontal_margin"
-                    android:text="\@Handle" />
+                    android:paddingStart="@dimen/activity_horizontal_margin"/>
             </RelativeLayout>
 
             <ImageView
                 android:id="@+id/image_content"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:background="#be121212" />
+                android:layout_height="250dp"
+                android:background="#be121212"
+                android:scaleType="centerCrop"/>
 
             <TextView
                 android:id="@+id/text_content"

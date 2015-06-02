@@ -33,6 +33,10 @@ public class Update {
         this.source = source;
     }
 
+    public String getMediaURL() {
+        return "";
+    }
+
     public long getID() {
         return 0;
     }

@@ -179,7 +179,7 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadMoreInstaPosts(final String id) {
-        if (id == null && instaUsers[0].equals("")) {
+        if (id == null || instaUsers[0].equals("")) {
             return;
         }
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {

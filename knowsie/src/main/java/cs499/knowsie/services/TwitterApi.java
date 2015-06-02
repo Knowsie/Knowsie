@@ -30,7 +30,16 @@ public interface TwitterApi {
                          Callback<List<Tweet>> cb);
 
     @GET("/1.1/statuses/user_timeline.json")
+    List<Tweet> getUserTimeline(@Query("screen_name") String screenName,
+                                @Query("count") int count,
+                                @Query("max_id") long maxID);
+
+    @GET("/1.1/statuses/user_timeline.json")
     void getUserTimeline(@Query("screen_name") String screenName,
                          @Query("count") int count,
                          Callback<List<Tweet>> cb);
+
+    @GET("/1.1/statuses/user_timeline.json")
+    List<Tweet> getUserTimeline(@Query("screen_name") String screenName,
+                                @Query("count") int count);
 }

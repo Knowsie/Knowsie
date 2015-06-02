@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import cs499.knowsie.R;
@@ -27,6 +29,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
+        Update update = updates.get(position);
 
         if (convertView == null) {
             convertView = LayoutInflater.from(context)
@@ -42,8 +45,6 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Update update = updates.get(position);
-
         switch (update.getSource()) {
             case INSTAGRAM:
                 viewHolder.updateSource.setImageResource(R.drawable.ic_instagram);
@@ -55,12 +56,20 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
                 break;
         }
 
-        viewHolder.imageView.setVisibility(View.GONE);
-//        viewHolder.textContent.setPaddingRelative(16, 0, 16, 16);
-
         viewHolder.userName.setText(update.getPrimaryName());
         viewHolder.userHandle.setText("@" + update.getSecondaryName());
         viewHolder.textContent.setText(update.getText());
+
+        int padding = viewHolder.textContent.getPaddingStart();
+
+        try {
+
+            Picasso.with(context).load(update.getMediaURL()).into(viewHolder.imageView);
+            viewHolder.textContent.setPadding(padding, padding, padding, 0);
+        } catch (Exception e) {
+            viewHolder.imageView.setVisibility(View.GONE);
+            viewHolder.textContent.setPadding(padding, 0, padding, 0);
+        }
 
         return convertView;
     }

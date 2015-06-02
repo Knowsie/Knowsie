@@ -217,8 +217,10 @@ public class MainActivity extends ActionBarActivity {
     public void logOut() {
         Log.d(TAG, "logout()");
         ParseUser.logOut();
+
         InstagramSession instagram = new InstagramSession(this);
         instagram.reset();
+
         startActivity(new Intent(this, LoginActivity.class));
         finish();
     }

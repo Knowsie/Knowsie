@@ -37,16 +37,25 @@ public class Post extends Update {
         return caption.text;
     }
 
+    @Override
+    public String getMediaURL() {
+        return images.standardResolution.url;
+    }
+
     private class Caption {
         String text;
     }
 
     private class Images {
         @SerializedName("low_resolution")
-        LowResolution lowResolution;
+        ImageInfo lowResolution;
+
+        @SerializedName("standard_resolution")
+        ImageInfo standardResolution;
+
     }
 
-    private class LowResolution {
+    private class ImageInfo {
         String url;
     }
 

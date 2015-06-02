@@ -7,6 +7,6 @@
         android:id="@+id/action_refresh"
         android:icon="@drawable/ic_navigation_refresh"
         android:orderInCategory="101"
-        android:title="@string/logout"
+        android:title="@string/refresh"
         app:showAsAction="ifRoom"/>
 </menu>

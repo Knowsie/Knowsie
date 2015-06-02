@@ -1,40 +1,28 @@
 package cs499.knowsie.data;
 
 public class Update {
-    private String userName;
-    private String screenName;
+    private String primaryName;
+    private String secondaryName;
     private String text;
     private Source source;
 
     public Update() {
     }
 
-    public Update(Source source) {
-        this.source = source;
+    public String getPrimaryName() {
+        return primaryName;
     }
 
-    public String getUserName() {
-        return userName;
+    public void setPrimaryName(String primaryName) {
+        this.primaryName = primaryName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public String getScreenName() {
-        return screenName;
-    }
-
-    public void setScreenName(String screenName) {
-        this.screenName = screenName;
+    public String getSecondaryName() {
+        return secondaryName;
     }
 
     public String getText() {
         return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
     }
 
     public Source getSource() {

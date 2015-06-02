@@ -51,27 +51,9 @@ public class LoginActivity extends Activity {
 
         instaLoginButton = (Button) findViewById(R.id.inst_login_button);
         instaLoginButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
-                instagram.authorize(new Instagram.InstagramAuthListener() {
-                    @Override
-                    public void onSuccess(InstagramUser user) {
-                        Log.d(TAG, "Logged in with Instagram");
-                        instaLoginButton.setBackgroundColor(getResources().getColor(R.color.mainGray));
-                        startMainActivity();
-                    }
-
-                    @Override
-                    public void onError(String error) {
-
-                    }
-
-                    @Override
-                    public void onCancel() {
-
-                    }
-                });
+                loginWithInstagram();
             }
         });
     }
@@ -84,11 +66,11 @@ public class LoginActivity extends Activity {
                     Log.d(TAG, "Uh oh. The user cancelled the Twitter login.");
                 } else if (user.isNew()) {
                     Log.d(TAG, "User signed up and logged in through Twitter!");
-                    twitLoginButton.setBackgroundColor(getResources().getColor(R.color.mainGray));
+                    disableButton(twitLoginButton);
                     startMainActivity();
                 } else {
                     Log.d(TAG, "User logged in through Twitter!");
-                    twitLoginButton.setBackgroundColor(getResources().getColor(R.color.mainGray));
+                    disableButton(twitLoginButton);
                     startMainActivity();
                 }
 
@@ -96,21 +78,51 @@ public class LoginActivity extends Activity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login, menu);
-        return true;
+    public void loginWithInstagram() {
+        instagram.authorize(new Instagram.InstagramAuthListener() {
+            @Override
+            public void onSuccess(InstagramUser user) {
+                Log.d(TAG, "User logged in with Instagram");
+                disableButton(instaLoginButton);
+                startMainActivity();
+            }
+
+            @Override
+            public void onError(String error) {
+                Log.d(TAG, "Instagram sign-in error: " + error);
+            }
+
+            @Override
+            public void onCancel() {
+                Log.d(TAG, "User cancelled Instagram login.");
+            }
+        });
+    }
+
+    public void disableButton(Button button) {
+        button.setBackgroundColor(getResources().getColor(R.color.mainGray));
+        button.setClickable(false);
     }
 
     public void startMainActivity() {
-        Log.d(TAG, "Logged into both Twitter and Instagram");
-        if (instagramSession.isActive() && ParseUser.getCurrentUser() != null) {
+        Log.d(TAG, "User logged into both Twitter and Instagram.");
+        if (allAccountsLoggedIn()) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.putExtra("instagramAccessToken", instagramSession.getAccessToken());
             startActivity(intent);
             finish();
         }
+    }
+
+    public boolean allAccountsLoggedIn() {
+        return (instagramSession.isActive() && ParseUser.getCurrentUser() != null);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_login, menu);
+        return true;
     }
 
     @Override

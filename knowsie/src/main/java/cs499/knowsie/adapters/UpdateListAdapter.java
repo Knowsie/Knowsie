@@ -58,8 +58,8 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         viewHolder.imageView.setVisibility(View.GONE);
 //        viewHolder.textContent.setPaddingRelative(16, 0, 16, 16);
 
-        viewHolder.userName.setText(update.getUserName());
-        viewHolder.userHandle.setText("@" + update.getScreenName());
+        viewHolder.userName.setText(update.getPrimaryName());
+        viewHolder.userHandle.setText("@" + update.getSecondaryName());
         viewHolder.textContent.setText(update.getText());
 
         return convertView;

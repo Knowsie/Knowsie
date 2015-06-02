@@ -1,6 +1,8 @@
-package cs499.knowsie.data;
+package cs499.knowsie.data.twitter;
 
 import com.google.gson.annotations.SerializedName;
+
+import cs499.knowsie.data.Update;
 
 public class Tweet extends Update {
     private TwitterUser user;
@@ -11,12 +13,12 @@ public class Tweet extends Update {
     }
 
     @Override
-    public String getUserName() {
+    public String getPrimaryName() {
         return user.name;
     }
 
     @Override
-    public String getScreenName() {
+    public String getSecondaryName() {
         return user.screenName;
     }
 

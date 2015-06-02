@@ -23,7 +23,6 @@ import com.parse.ParseTwitterUtils;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
-import net.londatiga.android.instagram.Instagram;
 import net.londatiga.android.instagram.InstagramSession;
 
 import java.util.List;
@@ -58,6 +57,14 @@ public class MainActivity extends ActionBarActivity {
         Log.d(TAG, "onCreate");
         setContentView(R.layout.activity_main);
 
+        user = ParseUser.getCurrentUser();
+
+        initToolbar();
+        queryGroups();
+        initFabButton();
+    }
+
+    public void initFabButton() {
         fabButton = (FloatingActionButton) findViewById(R.id.fab_add);
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,11 +72,6 @@ public class MainActivity extends ActionBarActivity {
                 addGroup();
             }
         });
-
-        user = ParseUser.getCurrentUser();
-
-        initToolbar();
-        queryGroups();
     }
 
     /**
@@ -159,6 +161,7 @@ public class MainActivity extends ActionBarActivity {
                 if (data.getStringExtra("instagramUser") != null) {
                     group.addInstagramUser(data.getStringExtra("instagramUser"));
                 }
+
                 groups.add(group);
 
                 group.saveInBackground(new SaveCallback() {
@@ -177,6 +180,8 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
 
+        findViewById(R.id.main_empty).setVisibility(View.INVISIBLE);
+
         // This method is used to account for the header view being counted.
         Group g = (Group) drawerListView.getItemAtPosition(position);
         List<String> twitterUsers = g.getTwitterUsers();
@@ -184,7 +189,7 @@ public class MainActivity extends ActionBarActivity {
 
         GroupFragment fragment = new GroupFragment();
 
-        if (twitterUsers != null) {
+        if (twitterUsers != null && instagramUsers != null) {
             Bundle bundle = new Bundle();
             bundle.putString("twitterAccessToken", twitterAuthToken.accessToken);
             bundle.putString("instagramAccessToken",

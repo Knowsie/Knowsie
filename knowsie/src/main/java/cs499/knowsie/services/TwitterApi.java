@@ -3,7 +3,7 @@ package cs499.knowsie.services;
 import java.util.List;
 
 import cs499.knowsie.data.AuthToken;
-import cs499.knowsie.data.Tweet;
+import cs499.knowsie.data.twitter.Tweet;
 import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;

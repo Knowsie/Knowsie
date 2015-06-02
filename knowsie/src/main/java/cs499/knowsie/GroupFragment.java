@@ -13,12 +13,12 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import cs499.knowsie.adapters.InfiniteScrollListener;
 import cs499.knowsie.adapters.UpdateListAdapter;
-import cs499.knowsie.data.InstagramPosts;
-import cs499.knowsie.data.InstagramUser;
-import cs499.knowsie.data.Tweet;
 import cs499.knowsie.data.Update;
+import cs499.knowsie.data.instagram.Envelope;
+import cs499.knowsie.data.instagram.InstagramUser;
+import cs499.knowsie.data.twitter.Tweet;
+import cs499.knowsie.listeners.InfiniteScrollListener;
 import cs499.knowsie.services.InstagramApi;
 import cs499.knowsie.services.TwitterApi;
 import retrofit.Callback;
@@ -88,22 +88,22 @@ public class GroupFragment extends ListFragment {
                 request.addHeader("Authorization", "Bearer " + twitterAccessToken);
             }
         };
-
         twitterRestAdapter = new RestAdapter.Builder()
                 .setEndpoint(TwitterApi.baseURL)
                 .setRequestInterceptor(requestInterceptor)
                 .build();
-
         twitterService = twitterRestAdapter.create(TwitterApi.class);
 
         instaRestAdapter = new RestAdapter.Builder()
                 .setEndpoint(InstagramApi.baseURL)
                 .build();
-
         instagramService = instaRestAdapter.create(InstagramApi.class);
     }
 
     public void loadTweets() {
+        if (twitterUsers[0].equals("")) {
+            return;
+        }
         twitterService.getUserTimeline(twitterUsers[0], count, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
@@ -120,7 +120,7 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadMoreTweets(long id) {
-        if (twitterService == null) {
+        if (twitterUsers[0].equals("")) {
             return;
         }
 
@@ -143,20 +143,23 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadInstaPosts() {
+        if (instaUsers[0].equals("")) {
+            return;
+        }
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
             @Override
             public void success(final InstagramUser instagramUser, Response response) {
                 instagramService.getUserFeed(instagramUser.getID(), 5, instaAccessToken,
-                                             new Callback<InstagramPosts>() {
+                                             new Callback<Envelope>() {
                                                  @Override
-                                                 public void success(InstagramPosts instagramPosts,
+                                                 public void success(Envelope envelope,
                                                                      Response response) {
-                                                     instagramPosts.setAllFullNames(instagramUser.getFullName());
-                                                     updateList.addAll(instagramPosts.getData());
+                                                     envelope.setAllFullNames(instagramUser.getFullName());
+                                                     updateList.addAll(envelope.getData());
                                                      updateListAdapter.notifyDataSetChanged();
 
-                                                     if (instagramPosts.getLastID() != null) {
-                                                         instaMaxID = instagramPosts.getLastID();
+                                                     if (envelope.getLastID() != null) {
+                                                         instaMaxID = envelope.getLastID();
                                                      }
                                                  }
 
@@ -176,22 +179,22 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadMoreInstaPosts(final String id) {
-        if (id == null) {
+        if (id == null && instaUsers[0].equals("")) {
             return;
         }
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
             @Override
             public void success(final InstagramUser instagramUser, Response response) {
                 instagramService.getUserFeed(instagramUser.getID(), 5, id, instaAccessToken,
-                                             new Callback<InstagramPosts>() {
+                                             new Callback<Envelope>() {
                                                  @Override
-                                                 public void success(InstagramPosts instagramPosts,
+                                                 public void success(Envelope envelope,
                                                                      Response response) {
-                                                     instagramPosts.setAllFullNames(instagramUser.getFullName());
-                                                     updateList.addAll(instagramPosts.getData());
+                                                     envelope.setAllFullNames(instagramUser.getFullName());
+                                                     updateList.addAll(envelope.getData());
                                                      updateListAdapter.notifyDataSetChanged();
 
-                                                     instaMaxID = instagramPosts.getLastID();
+                                                     instaMaxID = envelope.getLastID();
                                                  }
 
                                                  @Override

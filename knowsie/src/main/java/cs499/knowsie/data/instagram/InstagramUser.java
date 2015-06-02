@@ -1,4 +1,4 @@
-package cs499.knowsie.data;
+package cs499.knowsie.data.instagram;
 
 import com.google.gson.annotations.SerializedName;
 

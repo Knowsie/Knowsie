@@ -24,8 +24,15 @@
             android:id="@+id/group_fragment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/knowsie_background"
-            android:layout_below="@id/toolbar" />
+            android:layout_below="@id/toolbar">
+
+            <ImageView
+                android:id="@+id/main_empty"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/knowsie_background"/>
+        </FrameLayout>
 
         <com.getbase.floatingactionbutton.AddFloatingActionButton
             android:id="@+id/fab_add"

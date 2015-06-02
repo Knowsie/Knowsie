@@ -50,6 +50,10 @@ public class Group extends ParseObject {
         put("user", user);
     }
 
+    public String getGroupID() {
+        return getObjectId();
+    }
+
     @Override
     public String toString() {
         return getGroupName();

@@ -1,4 +1,4 @@
-package cs499.knowsie.adapters;
+package cs499.knowsie.listeners;
 
 import android.widget.AbsListView;
 

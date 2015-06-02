@@ -9,7 +9,7 @@ import com.parse.ParseTwitterUtils;
 
 import cs499.knowsie.data.Group;
 
-public class ParseApplication extends Application {
+public class Knowsie extends Application {
 
     @Override
     public void onCreate() {

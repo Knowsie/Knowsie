@@ -80,7 +80,7 @@ public class GroupFragment extends ListFragment {
         getListView().setOnScrollListener(new InfiniteScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                loadMoreTweets(tweetMaxID - 1);
+                loadMoreTweets(--tweetMaxID);
                 loadMoreInstaPosts(instaMaxID);
             }
         });

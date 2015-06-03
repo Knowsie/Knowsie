@@ -109,6 +109,7 @@ public class GroupFragment extends ListFragment {
         if (!hasTwitterUsers) {
             return;
         }
+        Log.d("?", "" + twitterUsers.length);
         twitterService.getUserTimeline(twitterUsers[0], count, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
@@ -131,7 +132,6 @@ public class GroupFragment extends ListFragment {
             return;
         }
 
-        Log.d("GroupFragment", "Loading more");
         twitterService.getUserTimeline(twitterUsers[0], count, id, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
@@ -259,6 +259,10 @@ public class GroupFragment extends ListFragment {
                 return true;
             case R.id.action_refresh:
                 refresh();
+                return true;
+            case R.id.action_delete:
+                MainActivity mainActivity = (MainActivity) getActivity();
+                mainActivity.deleteGroup();
                 return true;
         }
 

@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.getbase.floatingactionbutton.FloatingActionButton;
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -50,6 +51,7 @@ public class MainActivity extends ActionBarActivity {
     private ListView drawerListView;
     private ViewGroup drawerListHeader;
     private AuthToken twitterAuthToken;
+    private int currentGroupPosition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +182,7 @@ public class MainActivity extends ActionBarActivity {
             return;
         }
 
+        currentGroupPosition = position;
         findViewById(R.id.main_empty).setVisibility(View.INVISIBLE);
 
         // This method is used to account for the header view being counted.
@@ -239,6 +242,29 @@ public class MainActivity extends ActionBarActivity {
 
         startActivity(new Intent(this, LoginActivity.class));
         finish();
+    }
+
+    public void deleteGroup() {
+        Group g = (Group) drawerListView.getItemAtPosition(currentGroupPosition);
+        int previousGroupPosition = currentGroupPosition;
+        if (groupListAdapter.getCount() > 1) {
+            selectItem(drawerListView.getHeaderViewsCount());
+        } else {
+            findViewById(R.id.main_empty).setVisibility(View.VISIBLE);
+            this.getFragmentManager()
+                .beginTransaction()
+                .remove(this.getFragmentManager().findFragmentById(R.id.group_fragment))
+                .commit();
+            toolbar.setSubtitle("");
+        }
+
+        groups.remove(previousGroupPosition - 1);
+        g.deleteInBackground(new DeleteCallback() {
+            @Override
+            public void done(ParseException e) {
+                groupListAdapter.notifyDataSetChanged();
+            }
+        });
     }
 
     public void authorizeTwitter() {

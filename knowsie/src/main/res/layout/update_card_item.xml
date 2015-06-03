@@ -32,6 +32,16 @@
                 android:paddingStart="16dp"
                 android:paddingTop="16dp">
 
+                <TextView
+                    android:id="@+id/date_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:gravity="right"
+                    android:padding="8dp"
+                    android:text="DATE"
+                    android:textColor="#000000" />
+
                 <ImageView
                     android:id="@+id/update_src"
                     android:layout_width="32dp"
@@ -59,7 +69,7 @@
             <ImageView
                 android:id="@+id/image_content"
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="335dp"
                 android:background="#be121212"
                 android:scaleType="centerCrop"/>
 
@@ -76,18 +86,9 @@
             <LinearLayout
                 android:id="@+id/actions"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="15dp"
                 android:orientation="horizontal"
                 android:padding="8dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:clickable="true"
-                    android:gravity="center_vertical"
-                    android:padding="8dp"
-                    android:text="SHARE"
-                    android:textColor="#000000" />
 
             </LinearLayout>
         </LinearLayout>

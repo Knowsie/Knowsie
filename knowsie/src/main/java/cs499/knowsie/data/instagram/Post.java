@@ -1,7 +1,7 @@
 package cs499.knowsie.data.instagram;
 
 import com.google.gson.annotations.SerializedName;
-
+import java.util.Date;
 import cs499.knowsie.data.Update;
 
 public class Post extends Update {
@@ -41,6 +41,15 @@ public class Post extends Update {
     public String getMediaURL() {
         return images.standardResolution.url;
     }
+
+    @SerializedName("created_time")
+    private String createdTime;
+
+    @Override
+    public Date getDate() {
+        return new Date(Long.parseLong(createdTime) * 1000L);
+    }
+
 
     private class Caption {
         String text;

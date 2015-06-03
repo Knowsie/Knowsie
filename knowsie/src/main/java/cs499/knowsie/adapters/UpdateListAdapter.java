@@ -38,6 +38,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
             viewHolder.updateSource = (ImageView) convertView.findViewById(R.id.update_src);
             viewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
             viewHolder.userHandle = (TextView) convertView.findViewById(R.id.user_handle);
+            viewHolder.dateTime = (TextView) convertView.findViewById(R.id.date_text);
             viewHolder.textContent = (TextView) convertView.findViewById(R.id.text_content);
             viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image_content);
             convertView.setTag(viewHolder);
@@ -58,6 +59,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
 
         viewHolder.userName.setText(update.getPrimaryName());
         viewHolder.userHandle.setText("@" + update.getSecondaryName());
+        viewHolder.dateTime.setText(update.getDateString());
         viewHolder.textContent.setText(update.getText());
 
         int padding = viewHolder.textContent.getPaddingStart();
@@ -77,6 +79,7 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
     private static class ViewHolder {
         ImageView updateSource;
         TextView userName;
+        TextView dateTime;
         TextView userHandle;
         TextView textContent;
         ImageView imageView;

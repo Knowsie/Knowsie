@@ -2,12 +2,18 @@ package cs499.knowsie.data.twitter;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import cs499.knowsie.data.Update;
 
 public class Tweet extends Update {
     private TwitterUser user;
     private Entity entity;
     private long id;
+
+    @SerializedName("created_at")
+    private String createdAt;
 
     public Tweet() {
     }
@@ -33,6 +39,20 @@ public class Tweet extends Update {
 
     public String getMediaURL() {
         return entity.media.mediaURL;
+    }
+
+
+
+    @Override
+    public Date getDate() {
+
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
+            return sdf.parse(createdAt);
+        }
+        catch (Exception e) {
+            return null;
+        }
     }
 
     @Override

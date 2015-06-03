@@ -1,5 +1,8 @@
 package cs499.knowsie.data;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Update {
     private String primaryName;
     private String secondaryName;
@@ -39,6 +42,15 @@ public class Update {
 
     public long getID() {
         return 0;
+    }
+
+    public Date getDate() {
+        return null;
+    }
+
+    public String getDateString() {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd hh:mm a");
+        return sdf.format(this.getDate());
     }
 
     public enum Source {

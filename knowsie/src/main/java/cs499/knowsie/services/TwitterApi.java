@@ -1,5 +1,7 @@
 package cs499.knowsie.services;
 
+import android.support.annotation.Nullable;
+
 import java.util.List;
 
 import cs499.knowsie.data.AuthToken;
@@ -32,7 +34,7 @@ public interface TwitterApi {
     @GET("/1.1/statuses/user_timeline.json")
     List<Tweet> getUserTimeline(@Query("screen_name") String screenName,
                                 @Query("count") int count,
-                                @Query("max_id") long maxID);
+                                @Nullable @Query("max_id") Long maxID);
 
     @GET("/1.1/statuses/user_timeline.json")
     void getUserTimeline(@Query("screen_name") String screenName,

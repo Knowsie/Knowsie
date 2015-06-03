@@ -1,6 +1,7 @@
 package cs499.knowsie;
 
 import android.app.ListFragment;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import cs499.knowsie.adapters.UpdateListAdapter;
@@ -38,7 +40,7 @@ public class GroupFragment extends ListFragment {
     private String twitterAccessToken;
     private String instaAccessToken;
     private int count = 3;
-    private long tweetMaxID;
+    private Long tweetMaxID;
     private String instaMaxID;
     private InstagramApi instagramService;
     private TwitterApi twitterService;
@@ -64,8 +66,9 @@ public class GroupFragment extends ListFragment {
             twitterAccessToken = getArguments().getString("twitterAccessToken");
             instaAccessToken = getArguments().getString("instagramAccessToken");
             initAdaptersAndServices();
-            loadTweets();
-            loadInstaPosts();
+            new LoadUpdatesTask().execute();
+//            loadTweets();
+//            loadInstaPosts();
         }
 
         updateListAdapter = new UpdateListAdapter(view.getContext(), updateList);
@@ -80,8 +83,9 @@ public class GroupFragment extends ListFragment {
         getListView().setOnScrollListener(new InfiniteScrollListener() {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                loadMoreTweets(--tweetMaxID);
-                loadMoreInstaPosts(instaMaxID);
+                new LoadUpdatesTask().execute();
+//                loadMoreTweets(--tweetMaxID);
+//                loadMoreInstaPosts(instaMaxID);
             }
         });
     }
@@ -109,7 +113,6 @@ public class GroupFragment extends ListFragment {
         if (!hasTwitterUsers) {
             return;
         }
-        Log.d("?", "" + twitterUsers.length);
         twitterService.getUserTimeline(twitterUsers[0], count, new Callback<List<Tweet>>() {
             @Override
             public void success(List<Tweet> tweets, Response response) {
@@ -240,8 +243,7 @@ public class GroupFragment extends ListFragment {
 
     public void refresh() {
         updateList.clear();
-        loadTweets();
-        loadInstaPosts();
+        new LoadUpdatesTask().execute();
         updateListAdapter.notifyDataSetChanged();
     }
 
@@ -267,5 +269,55 @@ public class GroupFragment extends ListFragment {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    class LoadUpdatesTask extends AsyncTask<Void, Void, List<Update>> {
+
+        @Override
+        protected List<Update> doInBackground(Void... params) {
+            List<Update> updates = new ArrayList<>();
+            if (hasTwitterUsers) {
+                if (tweetMaxID != null) {
+                    tweetMaxID--;
+                }
+                List<Tweet> tweets = twitterService.getUserTimeline(twitterUsers[0],
+                                                                    count,
+                                                                    tweetMaxID);
+                if (!tweets.isEmpty()) {
+                    updates.addAll(tweets);
+                    tweetMaxID = tweets.get(tweets.size() - 1).getID();
+                }
+            }
+
+            if (hasInstagramUsers) {
+                InstagramUser user = instagramService.getUser(instaUsers[0], 1, instaAccessToken);
+                String userID = user.getID();
+                if (userID != null) {
+                    Envelope envelope = instagramService.getUserFeed(userID,
+                                                                     count,
+                                                                     instaMaxID,
+                                                                     instaAccessToken);
+                    if (!envelope.getData().isEmpty()) {
+                        envelope.setAllFullNames(user.getFullName());
+                        updates.addAll(envelope.getData());
+                        instaMaxID = envelope.getLastID();
+                    }
+                }
+            }
+            Log.d("HELP", updates.size() + "");
+            return updates;
+        }
+
+        @Override
+        protected void onPostExecute(List<Update> updates) {
+            updateList.addAll(updates);
+            updateListAdapter.sort(new Comparator<Update>() {
+                @Override
+                public int compare(Update lhs, Update rhs) {
+                    return rhs.getDate().compareTo(lhs.getDate());
+                }
+            });
+            updateListAdapter.notifyDataSetChanged();
+        }
     }
 }

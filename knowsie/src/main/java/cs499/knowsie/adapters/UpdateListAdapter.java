@@ -10,8 +10,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import cs499.knowsie.R;
@@ -83,17 +81,6 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         }
 
         return convertView;
-    }
-
-    @Override
-    public void notifyDataSetChanged() {
-        Collections.sort(updates, new Comparator<Update>() {
-            @Override
-            public int compare(Update lhs, Update rhs) {
-                return rhs.getDate().compareTo(lhs.getDate());
-            }
-        });
-        super.notifyDataSetChanged();
     }
 
     private static class ViewHolder {

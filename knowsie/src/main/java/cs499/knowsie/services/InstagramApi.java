@@ -1,5 +1,7 @@
 package cs499.knowsie.services;
 
+import android.support.annotation.Nullable;
+
 import cs499.knowsie.data.instagram.Envelope;
 import cs499.knowsie.data.instagram.InstagramUser;
 import retrofit.Callback;
@@ -28,4 +30,20 @@ public interface InstagramApi {
                  @Query("count") int count,
                  @Query("access_token") String accessToken,
                  Callback<InstagramUser> cb);
+
+    @GET("/users/{user-id}/media/recent/")
+    Envelope getUserFeed(@Path("user-id") String id,
+                         @Query("count") int count,
+                         @Query("access_token") String accessToken);
+
+    @GET("/users/{user-id}/media/recent/")
+    Envelope getUserFeed(@Path("user-id") String id,
+                         @Query("count") int count,
+                         @Nullable @Query("max_id") String maxID,
+                         @Query("access_token") String accessToken);
+
+    @GET("/users/search")
+    InstagramUser getUser(@Query("q") String query,
+                          @Query("count") int count,
+                          @Query("access_token") String accessToken);
 }

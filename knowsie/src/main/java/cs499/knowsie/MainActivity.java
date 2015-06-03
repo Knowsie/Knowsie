@@ -155,10 +155,10 @@ public class MainActivity extends ActionBarActivity {
         if (requestCode == ADD_GROUP) {
             if (resultCode == RESULT_OK) {
                 Group group = new Group(user, data.getStringExtra("groupName"));
-                if (data.getStringExtra("twitterUser") != null) {
+                if (!data.getStringExtra("twitterUser").equals("")) {
                     group.addTwitterUser(data.getStringExtra("twitterUser"));
                 }
-                if (data.getStringExtra("instagramUser") != null) {
+                if (!data.getStringExtra("instagramUser").equals("")) {
                     group.addInstagramUser(data.getStringExtra("instagramUser"));
                 }
 
@@ -190,15 +190,14 @@ public class MainActivity extends ActionBarActivity {
         GroupFragment fragment = new GroupFragment();
 
         if (twitterUsers != null && instagramUsers != null) {
-            Bundle bundle = new Bundle();
-            bundle.putString("twitterAccessToken", twitterAuthToken.accessToken);
-            bundle.putString("instagramAccessToken",
-                             getIntent().getStringExtra("instagramAccessToken"));
-            bundle.putStringArray("twitterUsers",
-                                  twitterUsers.toArray(new String[twitterUsers.size()]));
-            bundle.putStringArray("instagramUsers",
-                                  instagramUsers.toArray(new String[instagramUsers.size()]));
+            Bundle bundle;
+            bundle = createTwitterBundle(twitterUsers);
+            bundle.putAll(createInstagramBundle(instagramUsers));
             fragment.setArguments(bundle);
+        } else if (twitterUsers != null) {
+            fragment.setArguments(createTwitterBundle(twitterUsers));
+        } else if (instagramUsers != null) {
+            fragment.setArguments(createInstagramBundle(instagramUsers));
         }
 
         this.getFragmentManager().beginTransaction()
@@ -212,6 +211,23 @@ public class MainActivity extends ActionBarActivity {
 
         Log.d(TAG, "Starting " + toolbar.getSubtitle() + " Fragment");
         drawerLayout.closeDrawer(drawerListView);
+    }
+
+    public Bundle createTwitterBundle(List<String> twitterUsers) {
+        Bundle bundle = new Bundle();
+        bundle.putString("twitterAccessToken", twitterAuthToken.accessToken);
+        bundle.putStringArray("twitterUsers",
+                              twitterUsers.toArray(new String[twitterUsers.size()]));
+        return bundle;
+    }
+
+    public Bundle createInstagramBundle(List<String> instagramUsers) {
+        Bundle bundle = new Bundle();
+        bundle.putString("instagramAccessToken",
+                         getIntent().getStringExtra("instagramAccessToken"));
+        bundle.putStringArray("instagramUsers",
+                              instagramUsers.toArray(new String[instagramUsers.size()]));
+        return bundle;
     }
 
     public void logOut() {

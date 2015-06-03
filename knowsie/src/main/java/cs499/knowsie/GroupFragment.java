@@ -33,14 +33,13 @@ public class GroupFragment extends ListFragment {
     private List<Update> updateList;
     private String[] twitterUsers;
     private String[] instaUsers;
+    private boolean hasTwitterUsers;
+    private boolean hasInstagramUsers;
     private String twitterAccessToken;
     private String instaAccessToken;
-    private int count = 5;
+    private int count = 3;
     private long tweetMaxID;
     private String instaMaxID;
-    private RequestInterceptor requestInterceptor;
-    private RestAdapter twitterRestAdapter;
-    private RestAdapter instaRestAdapter;
     private InstagramApi instagramService;
     private TwitterApi twitterService;
 
@@ -55,7 +54,13 @@ public class GroupFragment extends ListFragment {
         Bundle args = getArguments();
         if (args != null) {
             twitterUsers = getArguments().getStringArray("twitterUsers");
+            if (twitterUsers != null) {
+                hasTwitterUsers = true;
+            }
             instaUsers = getArguments().getStringArray("instagramUsers");
+            if (instaUsers != null) {
+                hasInstagramUsers = true;
+            }
             twitterAccessToken = getArguments().getString("twitterAccessToken");
             instaAccessToken = getArguments().getString("instagramAccessToken");
             initAdaptersAndServices();
@@ -82,26 +87,26 @@ public class GroupFragment extends ListFragment {
     }
 
     public void initAdaptersAndServices() {
-        requestInterceptor = new RequestInterceptor() {
+        RequestInterceptor requestInterceptor = new RequestInterceptor() {
             @Override
             public void intercept(RequestFacade request) {
                 request.addHeader("Authorization", "Bearer " + twitterAccessToken);
             }
         };
-        twitterRestAdapter = new RestAdapter.Builder()
+        RestAdapter twitterRestAdapter = new RestAdapter.Builder()
                 .setEndpoint(TwitterApi.baseURL)
                 .setRequestInterceptor(requestInterceptor)
                 .build();
         twitterService = twitterRestAdapter.create(TwitterApi.class);
 
-        instaRestAdapter = new RestAdapter.Builder()
+        RestAdapter instaRestAdapter = new RestAdapter.Builder()
                 .setEndpoint(InstagramApi.baseURL)
                 .build();
         instagramService = instaRestAdapter.create(InstagramApi.class);
     }
 
     public void loadTweets() {
-        if (twitterUsers[0].equals("")) {
+        if (!hasTwitterUsers) {
             return;
         }
         twitterService.getUserTimeline(twitterUsers[0], count, new Callback<List<Tweet>>() {
@@ -110,7 +115,9 @@ public class GroupFragment extends ListFragment {
                 updateList.addAll(tweets);
                 updateListAdapter.notifyDataSetChanged();
 
-                tweetMaxID = updateList.get(updateList.size() - 1).getID();
+                if (!tweets.isEmpty()) {
+                    tweetMaxID = tweets.get(tweets.size() - 1).getID();
+                }
             }
 
             @Override
@@ -120,7 +127,7 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadMoreTweets(long id) {
-        if (twitterUsers[0].equals("")) {
+        if (!hasTwitterUsers) {
             return;
         }
 
@@ -143,24 +150,34 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadInstaPosts() {
-        if (instaUsers[0].equals("")) {
+        if (!hasInstagramUsers) {
             return;
         }
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
             @Override
             public void success(final InstagramUser instagramUser, Response response) {
-                instagramService.getUserFeed(instagramUser.getID(), 5, instaAccessToken,
+                String userID = instagramUser.getID();
+                if (userID == null) {
+                    return;
+                }
+                instagramService.getUserFeed(userID, count, instaAccessToken,
                                              new Callback<Envelope>() {
                                                  @Override
                                                  public void success(Envelope envelope,
                                                                      Response response) {
                                                      envelope.setAllFullNames(instagramUser.getFullName());
+
+                                                     if (envelope.getData().isEmpty()) {
+                                                         return;
+                                                     }
+
                                                      updateList.addAll(envelope.getData());
-                                                     updateListAdapter.notifyDataSetChanged();
 
                                                      if (envelope.getLastID() != null) {
                                                          instaMaxID = envelope.getLastID();
                                                      }
+
+                                                     updateListAdapter.notifyDataSetChanged();
                                                  }
 
                                                  @Override
@@ -179,18 +196,27 @@ public class GroupFragment extends ListFragment {
     }
 
     public void loadMoreInstaPosts(final String id) {
-        if (id == null || instaUsers[0].equals("")) {
+        if (id == null || !hasInstagramUsers) {
             return;
         }
         instagramService.getUser(instaUsers[0], 1, instaAccessToken, new Callback<InstagramUser>() {
             @Override
             public void success(final InstagramUser instagramUser, Response response) {
-                instagramService.getUserFeed(instagramUser.getID(), 5, id, instaAccessToken,
+                String userID = instagramUser.getID();
+                if (userID == null) {
+                    return;
+                }
+                instagramService.getUserFeed(userID, count, id, instaAccessToken,
                                              new Callback<Envelope>() {
                                                  @Override
                                                  public void success(Envelope envelope,
                                                                      Response response) {
                                                      envelope.setAllFullNames(instagramUser.getFullName());
+
+                                                     if (envelope.getData().isEmpty()) {
+                                                         return;
+                                                     }
+
                                                      updateList.addAll(envelope.getData());
                                                      updateListAdapter.notifyDataSetChanged();
 

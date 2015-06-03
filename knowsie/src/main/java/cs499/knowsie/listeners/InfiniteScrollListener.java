@@ -3,7 +3,7 @@ package cs499.knowsie.listeners;
 import android.widget.AbsListView;
 
 public abstract class InfiniteScrollListener implements AbsListView.OnScrollListener {
-    private int visibleThreshold = 0;
+    private int visibleThreshold = 1;
     private int currentPage = 0;
     private int previousTotalItemCount = 0;
     private boolean loading = true;

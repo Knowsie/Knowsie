@@ -10,16 +10,18 @@ public class InstagramUser {
     public InstagramUser() {
     }
 
-    public String getUsername() {
-        return data.get(0).username;
-    }
-
     public String getFullName() {
-        return data.get(0).fullName;
+        if (!data.isEmpty()) {
+            return data.get(0).fullName;
+        }
+        return null;
     }
 
     public String getID() {
-        return data.get(0).id;
+        if (!data.isEmpty()) {
+            return data.get(0).id;
+        }
+        return null;
     }
 
     private class UserData {

@@ -72,7 +72,6 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
             hasImage = true;
         } catch (Exception e) {
             hasImage = false;
-
         }
 
         if (hasImage) {

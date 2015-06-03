@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import cs499.knowsie.R;
@@ -63,17 +65,36 @@ public class UpdateListAdapter extends ArrayAdapter<Update> {
         viewHolder.textContent.setText(update.getText());
 
         int padding = viewHolder.textContent.getPaddingStart();
+        boolean hasImage;
 
         try {
-
             Picasso.with(context).load(update.getMediaURL()).into(viewHolder.imageView);
-            viewHolder.textContent.setPadding(padding, padding, padding, 0);
+            hasImage = true;
         } catch (Exception e) {
+            hasImage = false;
+
+        }
+
+        if (hasImage) {
+            viewHolder.imageView.setVisibility(View.VISIBLE);
+            viewHolder.textContent.setPadding(padding, padding, padding, 0);
+        } else {
             viewHolder.imageView.setVisibility(View.GONE);
             viewHolder.textContent.setPadding(padding, 0, padding, 0);
         }
 
         return convertView;
+    }
+
+    @Override
+    public void notifyDataSetChanged() {
+        Collections.sort(updates, new Comparator<Update>() {
+            @Override
+            public int compare(Update lhs, Update rhs) {
+                return rhs.getDate().compareTo(lhs.getDate());
+            }
+        });
+        super.notifyDataSetChanged();
     }
 
     private static class ViewHolder {

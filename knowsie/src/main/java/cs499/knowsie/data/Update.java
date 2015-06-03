@@ -49,7 +49,7 @@ public class Update {
     }
 
     public String getDateString() {
-        SimpleDateFormat sdf = new SimpleDateFormat("MMM dd hh:mm a");
+        SimpleDateFormat sdf = new SimpleDateFormat("M/d/yy h:mm a");
         return sdf.format(this.getDate());
     }
 
